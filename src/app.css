@@ -1,2 +1,61 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+
+@font-face {
+  font-family: 'Permanent Marker';
+  src: url('/fonts/PermanentMarker-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  font-family: 'Permanent Marker', cursive, sans-serif;
+}
+
+.paper-curl-right {
+  position: relative;
+  transition: all 250ms ease-out;
+}
+
+.paper-curl-right::before,
+.paper-curl-right::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  bottom: 12px;
+  width: 50%;
+  height: 55%;
+  max-width: 200px;
+  max-height: 100px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: all 250ms ease-out;
+}
+
+.paper-curl-right::after {
+  right: 10px;
+}
+
+.paper-curl-right::before {
+  display: none;
+}
+
+.paper-curl-right:hover {
+  border-radius: 0 0 40% 0 / 0 0 30% 0;
+}
+
+.paper-curl-right:hover::before {
+  display: block;
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to right, rgba(0, 0, 139, 0.7) 50%, rgba(0, 0, 0, 0) 50%);
+  pointer-events: none;
+  border-radius: 0 0 40% 0 / 0 0 30% 0;
+}
+
+.paper-curl-right:hover::after {
+  box-shadow: 8px 15px 20px rgba(0, 0, 0, 0.5);
+  transform: skew(8deg) rotate(3deg);
+}
