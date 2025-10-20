@@ -66,16 +66,28 @@
                 <img src="block-note.png" alt="Sticky Note Block Accelerate" class="relative left-30 scale-100" />
                 <div class="absolute left-150 top-5 z-20 rotate-1 p-10">
                     <h1 class="text-8xl font-bold mb-4 text-neutral-700">1. Build Simulations</h1>
-                    <p class="text-4xl mb-6 text-neutral-700" >Every 2 Weeks we'll give you a new simulation to build on. <br> <b><u>Improve it — or develop it from scratch.</u></b> <br>The goal is to make something that's technical, cool, and realistic.</p>
+                    <p class="text-3xl mb-6 text-neutral-700 px-8" >Every 2 Weeks we'll give you a new simulation to build on. <br> <b><u>Improve it — or develop it from scratch.</u></b> <br>The goal is to make something that's technical, cool, and realistic.</p>
                 </div>
             </div>
-            <div class="absolute z-20 -rotate-2 w-full p-10" style="top: {innerHeight + innerHeight/3}px;">
+            <div class="absolute z-20 -rotate-2 w-full p-10 py-40" style="top: {innerHeight + innerHeight/3}px;">
                 <img src="orpheus-note.png" alt="Sticky Note Block Accelerate" class="absolute right-30 scale-100" />
-                <div class="absolute right-150 top-5 z-20 p-10">
+                <div class="absolute right-150 top-5 z-20 px-10 py-30">
                     <h1 class="text-8xl font-bold mb-4 text-neutral-700">2. Submit and Vote</h1>
-                    <p class="text-4xl mb-6 text-neutral-700" >Your simulations will be voted on by your peers, and ranked every 2 weeks.<br> Your final rankings  </p>
+                    <p class="text-3xl mb-6 text-neutral-700 px-8" >Your simulations will be voted on by your peers, and ranked every 2 weeks.<br> Your final rankings  </p>
                 </div>
             </div>
+            <div class="absolute z-20 rotate-1 w-full p-10" style="top: {innerHeight + 2.5*innerHeight/3}px;">
+                <img src="prize-note.png" alt="Sticky Note Trophy" class="relative left-30 -rotate-5 scale-100" />
+                <div class="absolute left-150 top-5 z-20 rotate-1 p-10">
+                    <h1 class="text-8xl font-bold mb-4 text-neutral-700">3. Get Prizes</h1>
+                    <p class="text-3xl mb-6 text-neutral-700 px-8" >We'll be giving away Prizes like Macbooks, iPads, and Stickers based off your ranking at the end of the event!</p>
+                </div>
+            </div>
+            <div style="top: {innerHeight *2.3}px;" class="absolute z-20 text-center w-full">
+                <h1 class="text-4xl text-neutral-700">Sign Up Now!</h1>
+            </div>
+            <img src="graph.png" alt="Graph" class="absolute right-15 rotate-10" style="top: {innerHeight* 2.35}px"/>
+            <img src="clickme.png" alt="Click Me Pointer" class="absolute left-15 rotate-10" style="top: {innerHeight* 2.35}px"/>
         </div>
     </div>
 </div>
