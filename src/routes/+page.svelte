@@ -56,8 +56,8 @@
     </div>
     
     <div class="relative z-10 p-10">
-        <img src="cloud-note-2.png" alt="Cloud Note" class="absolute top-20 left-20 -rotate-6 scale-100 paper-curl-right cursor-pointer shadow-lg shadow-black" />
-        <img src="cloud-note2.png" alt="Cloud Note 2" class="absolute top-25 right-13 rotate-6 scale-100 paper-curl-left cursor-pointer z-30 " />
+        <img src="cloud-note-2.png" alt="Cloud Note" class="absolute top-20 left-20 -rotate-6 scale-100  cursor-pointer shadow-lg shadow-black" />
+        <img src="cloud-note2.png" alt="Cloud Note 2" class="absolute top-25 right-13 rotate-6 scale-100  cursor-pointer z-30 " />
         <img src="hand-graph.png" alt="Hand Graph" class="absolute z-20 top-20 right-30 scale-100" />
         <img src="sticky-scroll-down.png" alt="Sticky Scroll Down" class="absolute z-20 top-150 right-50 scale-100" />
         <img src="Logo.png" alt="Logo" class="absolute z-20 top-110 left-20" />

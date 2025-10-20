@@ -59,3 +59,16 @@
   box-shadow: 8px 15px 20px rgba(0, 0, 0, 0.5);
   transform: skew(8deg) rotate(3deg);
 }
+
+ @layer utilities {
+      /* Hide scrollbar for Chrome, Safari, and Opera */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Hide scrollbar for IE, Edge, and Firefox */
+      .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+    }
