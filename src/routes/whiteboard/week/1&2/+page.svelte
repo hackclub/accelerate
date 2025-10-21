@@ -49,7 +49,7 @@
     </a>
     <iframe 
         src="https://o0gkkkok8k08wwgksk8okgwg.a.selfhosted.hackclub.com/" 
-        class="absolute w-3/4 h-[75vh] overflow-hidden scale-120 z-50 -right-100 drop-shadow-6xl" 
+        class="absolute w-3/4 h-[75vh] overflow-hidden scale-120 z-40 -right-100 drop-shadow-6xl" 
         scrolling="no"
         title="Simulation"
     ></iframe>
@@ -74,8 +74,21 @@
             {/if}
         </button>
     </div>
-    <h1 class="absolute top-50 left-15 text-4xl md:text-5xl font-bold z-50 text-neutral-700 drop-shadow-lg">
+    <h1 class="absolute top-30 left-15 text-4xl md:text-5xl font-bold z-50 text-neutral-700 drop-shadow-lg">
         Week 1 & 2: The Double Pendulum
     </h1>
+    <p class = "absolute bottom-15 left-100">
+        <b class="text-xl">Your Task:</b> <br>
+        This week you're challenged to build your own Double Pendulum simulation! <br>
+        You can write it in anything, as long as you don't use a premade physics engine,<br> and it's shipped as either a web-page,
+         or an executable file (think .exe or ELF).<br>
+         <b class="text-xl">Ideas:</b> <br>
+        What if: <br>
+        <span class="relative left-10">The rods were strings?</span><br>
+        <span class="relative left-10">There was air resistance?</span><br>
+        <span class="relative left-10">The model was 3D?</span><br>
+        <span class="relative left-10">Everything had Mass?</span><br>
+        <span class="relative left-10">It was interactive?</span>
+    </p>
 </div>
 </div>

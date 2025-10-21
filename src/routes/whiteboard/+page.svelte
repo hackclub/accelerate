@@ -17,9 +17,11 @@
 <h3 class="absolute top-59 left-12 text-xl md:text-xl font-medium z-50 text-neutral-700 ">
     So what are the prizes?
     <ul class="relative px-5 list-inside text-lg">
-        <li>1st M5 Macbook Pro or a Ticket to the APS Global Physics Summit </li>
-        <li>2nd Cool Swag from Hack Club</li>
-        <li>3rd Feature in Hack Club's Newsletter</li>
-        <li>4th And more!</li>
+        <li>1st: <a href="https://www.apple.com/macbook-pro/" class=" underline hover:text-neutral-400">M5 Macbook Pro</a> or a Ticket to the <a href="https://summit.aps.org/" class=" underline hover:text-neutral-400">APS Global Physics Summit</a> </li>
+        <li>2nd: <a href="https://www.apple.com/macbook-air/" class=" underline hover:text-neutral-400">M4 Macbook Air</a></li>
+        <li>3rd: <a href="https://www.apple.com/ipad-air/" class=" underline hover:text-neutral-400">M3 iPad Air</a> or <a href="https://www.apple.com/mac-mini/" class=" underline hover:text-neutral-400">M4 Mac Mini</a></li>
+        <li>4th - 10th: <a href="https://www.casio.com/us/scientific-calculators/product.FX-CG50/" class=" underline hover:text-neutral-400">Casio FX-CG50 Graphing Calculator</a></li>
+        <li>11th-20th: <a href="https://www.solidworks.com/product/students" class=" underline hover:text-neutral-400">A Year Long Solidworks Subscription</a></li>
+        <li>Everyone: A Physics Themed Sticker Sheet!</li>
     </ul>
 </h3>
