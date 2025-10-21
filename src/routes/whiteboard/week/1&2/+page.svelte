@@ -82,6 +82,7 @@
         This week you're challenged to build your own Double Pendulum simulation! <br>
         You can write it in anything, as long as you don't use a premade physics engine,<br> and it's shipped as either a web-page,
          or an executable file (think .exe or ELF).<br>
+         You can also submit a paper if you feel like it, but it's completely optional.<br>
          <b class="text-xl">Ideas:</b> <br>
         What if: <br>
         <span class="relative left-10">The rods were strings?</span><br>
@@ -90,5 +91,6 @@
         <span class="relative left-10">Everything had Mass?</span><br>
         <span class="relative left-10">It was interactive?</span>
     </p>
+    
 </div>
 </div>

@@ -1,5 +1,11 @@
 <script>
     let { children } = $props();
+    
+    let week1_2Box = $state(false);
+    let week3_4Box = $state(false);
+    let week5_6Box = $state(false);
+    let week7_8Box = $state(false);
+    let week9_10Box = $state(false);
 
     let currentUser = "placeholder_user";
 
@@ -14,14 +20,41 @@
 </div>
 
 <div class="relative z-[1]">
-    <div class="fixed top-12 left-12 z-40 flex flex-col p-3">
-        <p class="text-lg ">Logged In As: <span class="text-bold">{currentUser}</span></p>
+    <div class="fixed top-12 left-12 z-40 flex flex-row items-center gap-3 p-3">
+        <p class="text-lg">Logged In As: <span class="font-bold">{currentUser}</span></p>
         <button
             onclick={logout}
-            class="px-4 py-2 "
+            class="px-4 py-1 rounded-md text-neutral-700 border border-black hover:border-red-700 hover:text-red-700"
         >
             Logout
         </button>
+        <div class="flex flex-row items-center gap-2">
+            {#if week1_2Box}
+            <img src="/greenBox.png" alt="green week 1_2" class="w-20 h-20"/>
+            {:else}
+            <img src="/blackBox.png" alt="black week 1_2" class="w-20 h-20"/>
+            {/if}
+            {#if week3_4Box}
+            <img src="/greenBox.png" alt="green week 3_4" class="w-20 h-20"/>
+            {:else}
+            <img src="/blackBox.png" alt="black week 3_4" class="w-20 h-20"/>
+            {/if}
+            {#if week5_6Box}
+            <img src="/greenBox.png" alt="green week 5_6" class="w-20 h-20"/>
+            {:else}
+            <img src="/blackBox.png" alt="black week 5_6" class="w-20 h-20"/>
+            {/if}
+            {#if week7_8Box}
+            <img src="/greenBox.png" alt="green week 7_8" class="w-20 h-20"/>
+            {:else}
+            <img src="/blackBox.png" alt="black week 7_8" class="w-20 h-20"/>
+            {/if}
+            {#if week9_10Box}
+            <img src="/greenBox.png" alt="green week 9_10" class="w-20 h-20"/>
+            {:else}
+            <img src="/blackBox.png" alt="black week 9_10" class="w-20 h-20"/>
+            {/if}
+        </div>
     </div>
 
     {@render children?.()}
