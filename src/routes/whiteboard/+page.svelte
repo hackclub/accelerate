@@ -12,3 +12,14 @@
         </div>
     </a>
 </div>
+<h1 class="absolute top-30 left-12 text-8xl md:text-7xl font-bold z-50 text-neutral-700 ">Welcome to Accelerate!! </h1>
+<h2 class="absolute top-50 left-12 text-2xl md:text-3xl font-semibold z-50 text-neutral-700 ">The <u>only</u> Physics Based YSWS</h2>
+<h3 class="absolute top-59 left-12 text-xl md:text-xl font-medium z-50 text-neutral-700 ">
+    So what are the prizes?
+    <ul class="relative px-5 list-inside text-lg">
+        <li>1st M5 Macbook Pro or a Ticket to the APS Global Physics Summit </li>
+        <li>2nd Cool Swag from Hack Club</li>
+        <li>3rd Feature in Hack Club's Newsletter</li>
+        <li>4th And more!</li>
+    </ul>
+</h3>

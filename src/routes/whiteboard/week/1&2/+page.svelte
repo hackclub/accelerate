@@ -74,5 +74,8 @@
             {/if}
         </button>
     </div>
+    <h1 class="absolute top-50 left-15 text-4xl md:text-5xl font-bold z-50 text-neutral-700 drop-shadow-lg">
+        Week 1 & 2: The Double Pendulum
+    </h1>
 </div>
 </div>
