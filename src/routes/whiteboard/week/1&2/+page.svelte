@@ -3,6 +3,11 @@
 
     let innerHeight = $state(0);
     let innerWidth = $state(0);
+    let expanded = $state(false);
+
+    function toggleExpand() {
+        expanded = !expanded;
+    }
 
     onMount(() => {
         const now = new Date();
@@ -26,9 +31,10 @@
             window.removeEventListener('resize', updateSize);
         };
     });
+
 </script>
 <div>
-    <div>
+    <div class="relative min-h-screen">
     <a href="/whiteboard" class="fixed top-12 right-12 z-50">
         <div class="flex flex-col items-center gap-2">
             <img src="/arrow.jpg" alt="Up Arrow" class="w-16 md:w-20 -rotate-90"/>
@@ -47,10 +53,26 @@
         scrolling="no"
         title="Simulation"
     ></iframe>
-    <iframe
-        src="/page.pdf"
-        class="absolute left-20 top-40 w-100 h-200 z-50 rounded-2xl"
-        title="Embedded PDF Viewer"
-    ></iframe>
+    <div class={expanded
+        ? "fixed inset-0 z-50 w-screen h-screen"
+        : "absolute left-10 bottom-15 w-full max-w-[20rem] h-[55vh] z-40 rounded-lg"}>
+        <iframe
+            src="/page.pdf"
+            class={expanded ? "w-full h-full" : "w-full h-full rounded-2xl"}
+            title="Embedded PDF Viewer"
+        ></iframe>
+        <button
+            type="button"
+            onclick={toggleExpand}
+            class={expanded? "absolute top-0 left-30 m-2 p-2 rounded-md text-white z-50" : "absolute top-0 left-0 m-2 p-2 rounded-md text-white z-50"}
+            aria-label="Expand PDF"
+        >
+            {#if expanded}
+                <img src="/contract.svg" alt="" class="w-6 h-6 filter brightness-0 invert" />
+            {:else}
+                <img src="/expand.svg" alt="" class="w-6 h-6 filter brightness-0 invert" />
+            {/if}
+        </button>
+    </div>
 </div>
 </div>
