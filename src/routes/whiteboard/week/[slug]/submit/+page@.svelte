@@ -184,3 +184,6 @@
         </button>
     </form>
 </div>
+<button class="hover:cursor-pointer absolute top-20 left-20 z-50" onclick={() => history.back()}>
+    <img src="/back.png" alt="Back Button" class=" w-20"/>
+</button>
