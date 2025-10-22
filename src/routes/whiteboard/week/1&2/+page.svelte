@@ -4,6 +4,7 @@
     let innerHeight = $state(0);
     let innerWidth = $state(0);
     let expanded = $state(false);
+    let hoverSubmit = $state(false);
 
     function toggleExpand() {
         expanded = !expanded;
@@ -82,7 +83,7 @@
         This week you're challenged to build your own Double Pendulum simulation! <br>
         You can write it in anything, as long as you don't use a premade physics engine,<br> and it's shipped as either a web-page,
          or an executable file (think .exe or ELF).<br>
-         You can also submit a paper if you feel like it, but it's completely optional.<br>
+         You can also submit a paper if you feel like it, but that's completely optional.<br>
          <b class="text-xl">Ideas:</b> <br>
         What if: <br>
         <span class="relative left-10">The rods were strings?</span><br>
@@ -91,6 +92,9 @@
         <span class="relative left-10">Everything had Mass?</span><br>
         <span class="relative left-10">It was interactive?</span>
     </p>
+    <button class="absolute bottom-25 left-170 hover:cursor-pointer" onclick={() => window.location.replace("/whiteboard/week/1%262/submit")} onmouseenter={() => (hoverSubmit = true)} onmouseleave={() => (hoverSubmit = false)}>
+        <img src={hoverSubmit ? "/submitgreen.png" : "/submitred.png"} alt="Submit Button" class="w-70"/>
+    </button>
     
 </div>
 </div>

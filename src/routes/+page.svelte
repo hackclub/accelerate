@@ -1,8 +1,12 @@
 <script>
     import { onMount } from 'svelte';
+    import { PUBLIC_HC_OAUTH_CLIENT_ID, PUBLIC_HC_OAUTH_REDIRECT_URL, PUBLIC_HC_OAUTH_RESPONSE_TYPE } from '$env/static/public';
 
     let innerHeight = $state(0);
     let innerWidth = $state(0);
+    let scaleSignInButton = $state(false);
+
+    let hcaRedirect = `https://hca.dinosaurbbq.org/oauth/authorize?client_id=${PUBLIC_HC_OAUTH_CLIENT_ID}&redirect_uri=${PUBLIC_HC_OAUTH_REDIRECT_URL}&response_type=${PUBLIC_HC_OAUTH_RESPONSE_TYPE}&scope=email`;
 
     onMount(() => {
         document.title = "Accelerate - Build Simulations";
@@ -88,6 +92,9 @@
             </div>
             <img src="graph.png" alt="Graph" class="absolute right-15 rotate-10" style="top: {innerHeight* 2.35}px"/>
             <img src="clickme.png" alt="Click Me Pointer" class="absolute left-15 rotate-10" style="top: {innerHeight* 2.35}px"/>
+            <a href={hcaRedirect} class="absolute z-30 left-120" style="top: {innerHeight * 2.5}px" onmouseenter={() => (scaleSignInButton = true)} onmouseleave={() => (scaleSignInButton = false)}>
+                <img src="signin.png" alt="Sign In Button" class={scaleSignInButton ? "w-120 mt-10 mb-20 scale-120" : "w-120 mt-10 mb-20 scale-100"}/>
+            </a>
         </div>
     </div>
 </div>
