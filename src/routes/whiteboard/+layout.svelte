@@ -24,9 +24,9 @@
         <p class="text-lg">Logged In As: <span class="font-bold">{currentUser}</span></p>
         <button
             onclick={logout}
-            class="px-4 py-1 rounded-md text-neutral-700 border border-black hover:border-red-700 hover:text-red-700"
+            class="px-4 py-1 rounded-md text-neutral-700 "
         >
-            Logout
+            <img src="/logout.png" alt="Logout" class="w-7 inline-block mr-2" />
         </button>
         <div class="flex flex-row items-center gap-2">
             {#if week1_2Box}

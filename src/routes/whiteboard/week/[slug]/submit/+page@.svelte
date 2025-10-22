@@ -1,5 +1,6 @@
 <script>
     import { page } from '$app/stores';
+    import { onMount } from 'svelte';
     
     let projectName = $state('');
     let projectDescription = $state('');
@@ -7,6 +8,9 @@
     let codeUrl = $state('');
     let liveUrl = $state('');
     let paperUrl = $state('');
+    let hoverbutton = $state(false);
+    let innerWidth = $state(0);
+    let middle2 = $derived(innerWidth < 1755);
     
     const slug = $derived($page.params.slug);
     
@@ -35,9 +39,31 @@
         console.log('Form submitted:', formData);
         // TODO: Add submission logic here
     }
-</script>
 
-<div class="min-h-screen p-8 flex flex-col items-center">
+    onMount(() => {
+        const updateSize = () => {
+            innerWidth = window.innerWidth;
+        };
+
+        updateSize();
+
+        window.addEventListener('resize', updateSize);
+
+        return () => {
+            window.removeEventListener('resize', updateSize);
+        };
+    });
+</script>
+ <div class="absolute inset-0 z-0">
+        <img src="/top-whiteboard.png" alt="" class="w-full h-auto block" />
+        {#if middle2}
+        <img src="/middle-whiteboard.png" alt="" class="w-full h-auto block" />
+        {:else}
+        <img src="/middle-2-whiteboard.png" alt="" class="w-full h-auto block" />
+        {/if}
+        <img src="/bottom-whiteboard.png" alt="" class="w-full h-auto block" />
+</div>
+<div class="min-h-screen p-20 flex flex-col items-center z-50 relative">
     <h1 class="text-5xl font-bold mb-8">Let's go!!! You're ready to submit!!</h1>
     
     <form onsubmit={handleSubmit} class="w-full max-w-2xl space-y-6">
@@ -51,7 +77,7 @@
                 type="text"
                 bind:value={projectName}
                 required
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class={projectName ? "w-full px-4 py-2 rounded-lg ring-2 ring-green-400 focus:ring-blue-500" : "w-full px-4 py-2 rounded-lg focus:outline-none ring-2 ring-black focus:ring-blue-500"}
                 placeholder="Enter your project name"
             />
         </div>
@@ -66,7 +92,7 @@
                 bind:value={projectDescription}
                 required
                 rows="6"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class={projectDescription ? "w-full px-4 py-2 rounded-lg ring-2 ring-green-400 focus:ring-blue-500" : "w-full px-4 py-2 rounded-lg focus:outline-none ring-2 ring-black focus:ring-blue-500"}
                 placeholder="Describe your project in detail"
             ></textarea>
         </div>
@@ -83,10 +109,10 @@
                 onchange={handleFileChange}
                 bind:this={fileInput}
                 required
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class={screenshot ? "w-full px-4 py-2 rounded-lg ring-2 ring-green-400 focus:ring-blue-500" : "w-full px-4 py-2 rounded-lg focus:outline-none ring-2 ring-black focus:ring-blue-500"}
             />
             {#if screenshot}
-                <p class="text-sm text-gray-600 mt-2">Selected: {screenshot.name}</p>
+                <p class="text-sm text-gray-600 mt-2">Selected: <span class="font-bold">{screenshot.name}</span></p>
             {/if}
         </div>
         
@@ -100,7 +126,7 @@
                 type="url"
                 bind:value={codeUrl}
                 required
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class={codeUrl ? "w-full px-4 py-2 rounded-lg ring-2 ring-green-400 focus:ring-blue-500" : "w-full px-4 py-2 rounded-lg focus:outline-none ring-2 ring-black focus:ring-blue-500"}
                 placeholder="https://github.com/username/repo"
             />
         </div>
@@ -115,7 +141,7 @@
                 type="url"
                 bind:value={liveUrl}
                 required
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class={liveUrl ? "w-full px-4 py-2 rounded-lg ring-2 ring-green-400 focus:ring-blue-500" : "w-full px-4 py-2 rounded-lg focus:outline-none ring-2 ring-black focus:ring-blue-500"}
                 placeholder="https://your-project.com"
             />
         </div>
@@ -129,7 +155,7 @@
                 type="text"
                 value={slug}
                 disabled
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100"
+                class={slug ? "w-full px-4 py-2 rounded-lg ring-2 ring-green-400 focus:ring-blue-500" : "w-full px-4 py-2 rounded-lg focus:outline-none ring-2 ring-black focus:ring-blue-500"}
             />
         </div>
         
@@ -142,7 +168,7 @@
                 id="paperUrl"
                 type="url"
                 bind:value={paperUrl}
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class={paperUrl ? "w-full px-4 py-2 rounded-lg ring-2 ring-green-400 focus:ring-blue-500" : "w-full px-4 py-2 rounded-lg focus:outline-none ring-2 ring-black focus:ring-blue-500"}
                 placeholder="https://link-to-paper.com"
             />
         </div>
@@ -150,9 +176,11 @@
         <!-- Submit Button -->
         <button
             type="submit"
-            class="w-full  text-black font-bold py-3 px-6 rounded-lg"
+            class="w-full text-black font-bold  rounded-lg"
+            onmouseenter={() => (hoverbutton = true)}
+            onmouseleave={() => (hoverbutton = false)}
         >
-            Submit Project
+            <img src={hoverbutton ? "/yay.png" : "/submit.png"} alt="Submit Project" class={middle2 ? "mx-auto w-80" : "mx-auto w-30"} />
         </button>
     </form>
 </div>

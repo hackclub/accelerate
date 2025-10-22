@@ -74,7 +74,7 @@
             {/if}
         </button>
     </div>
-    <h1 class="absolute top-30 left-15 text-4xl md:text-5xl font-bold z-50 text-neutral-700 drop-shadow-lg">
+    <h1 class={expanded ? "hidden" : "absolute top-30 left-15 text-4xl md:text-5xl font-bold z-50 text-neutral-700 drop-shadow-lg"}>
         Week 1 & 2: The Double Pendulum
     </h1>
     <p class = "absolute bottom-15 left-100">

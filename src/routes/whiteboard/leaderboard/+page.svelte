@@ -12,3 +12,4 @@
         </div>
     </a>
 </div>
+<img src="/locked.png" alt="Leaderboard Locked" class="absolute top-1/2 left-3/10 "/>
