@@ -1,9 +1,9 @@
 import { redirect } from '@sveltejs/kit';
-import { HC_OAUTH_CLIENT_SECRET } from '$env/static/private';
+import { HC_OAUTH_CLIENT_SECRET, BEARER_TOKEN_BACKEND } from '$env/static/private';
 import { PUBLIC_HC_OAUTH_CLIENT_ID, PUBLIC_HC_OAUTH_REDIRECT_URL } from '$env/static/public';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ url }) => {
+export const load: PageServerLoad = async ({ url, cookies }) => {
     const code = url.searchParams.get('code');
     const error = url.searchParams.get('error');
     const errorDescription = url.searchParams.get('error_description');
@@ -49,14 +49,15 @@ export const load: PageServerLoad = async ({ url }) => {
         // Fetch user by idv token
         const userResponse = await fetch(`https://y08gko88kskgs08kcc80c040.a.selfhosted.hackclub.com/users/by-idv-token/${accessToken}`, {
             headers: {
-                'api-key': 'themasterofkeys'
+                'api-key': BEARER_TOKEN_BACKEND
             }
         });
 
         if (userResponse.ok) {
             const user = await userResponse.json();
             if (user !== null) {
-                // Logic for user found
+                cookies.set('userId', user.id, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
+                throw redirect(302, '/whiteboard');
             } else {
                 // Logic for user not found
             }
