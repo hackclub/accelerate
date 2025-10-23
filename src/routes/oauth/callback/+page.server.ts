@@ -46,9 +46,23 @@ export const load: PageServerLoad = async ({ url }) => {
 
         console.log('Access token received:', accessToken);
 
-        // TODO: Store the access token (in session, cookie, or database)
-        // For now, redirecting to home page
-        throw redirect(302, '/');
+        // Fetch user by idv token
+        const userResponse = await fetch(`https://y08gko88kskgs08kcc80c040.a.selfhosted.hackclub.com/users/by-idv-token/${accessToken}`, {
+            headers: {
+                'api-key': 'themasterofkeys'
+            }
+        });
+
+        if (userResponse.ok) {
+            const user = await userResponse.json();
+            if (user !== null) {
+                // Logic for user found
+            } else {
+                // Logic for user not found
+            }
+        } else {
+            throw redirect(302, '/');
+        }
 
     } catch (err) {
         console.error('Error exchanging code for token:', err);
