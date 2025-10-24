@@ -1,13 +1,13 @@
 <script>
-    let { children } = $props();
+    let { children, data } = $props();
     
-    let week1_2Box = $state(false);
-    let week3_4Box = $state(false);
-    let week5_6Box = $state(false);
-    let week7_8Box = $state(false);
-    let week9_10Box = $state(false);
+    let week1_2Box = $state(data.weekStatus.week1_2);
+    let week3_4Box = $state(data.weekStatus.week3_4);
+    let week5_6Box = $state(data.weekStatus.week5_6);
+    let week7_8Box = $state(data.weekStatus.week7_8);
+    let week9_10Box = $state(data.weekStatus.week9_10);
 
-    let currentUser = "placeholder_user";
+    let currentUser = data.userName;
 
     async function logout() {
         await fetch('/api/logout', { method: 'POST' });

@@ -1,6 +1,9 @@
-<script>
+<script lang="ts">
     import { page } from '$app/stores';
     import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
+    
+    let { data } = $props();
     
     let projectName = $state('');
     let projectDescription = $state('');
@@ -11,6 +14,9 @@
     let hoverbutton = $state(false);
     let innerWidth = $state(0);
     let middle2 = $derived(innerWidth < 1755);
+    let submitting = $state(false);
+    let submitted = $state(false);
+    let selectedProject = $state('');
     
     const slug = $derived($page.params.slug);
     
@@ -26,18 +32,67 @@
     async function handleSubmit(event) {
         event.preventDefault();
         
-        const formData = {
-            projectName,
-            projectDescription,
-            screenshot,
-            codeUrl,
-            liveUrl,
-            submissionWeek: slug,
-            paperUrl
-        };
+        if (submitting) return;
+        submitting = true;
         
-        console.log('Form submitted:', formData);
-        // TODO: Add submission logic here
+        try {
+            // Convert screenshot to base64 if exists
+            let attachmentUrls: string[] = [];
+            if (screenshot) {
+                const reader = new FileReader();
+                const base64Promise = new Promise<string>((resolve, reject) => {
+                    reader.onload = () => resolve(reader.result as string);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(screenshot);
+                });
+                
+                const base64 = await base64Promise;
+                attachmentUrls.push(base64);
+            }
+            
+            // Get time spent from selected project
+            let timeSpentMinutes = 0;
+            if (selectedProject && data.projects) {
+                const project = data.projects.find((p: any) => p.name === selectedProject);
+                if (project) {
+                    timeSpentMinutes = Math.floor(project.total_seconds / 60);
+                }
+            }
+
+            const response = await fetch('/api/projects', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    project_name: projectName,
+                    project_description: projectDescription,
+                    attachment_urls: attachmentUrls,
+                    code_url: codeUrl,
+                    live_url: liveUrl,
+                    submission_week: slug,
+                    paper_url: paperUrl || '',
+                    shipped: true,
+                    sent_to_airtable: false,
+                    review_ids: [],
+                    time_spent: timeSpentMinutes,
+                    user_id: data.userID
+                })
+            });
+            
+            if (response.ok) {
+                submitted = true;
+                setTimeout(() => goto(`/whiteboard/week/${slug}`), 7000);
+            } else {
+                const error = await response.text();
+                alert(`Failed to submit project: ${error}`);
+            }
+        } catch (error) {
+            console.error('Submission error:', error);
+            alert('An error occurred while submitting your project');
+        } finally {
+            submitting = false;
+        }
     }
 
     onMount(() => {
@@ -63,6 +118,12 @@
         {/if}
         <img src="/bottom-whiteboard.png" alt="" class="w-full h-auto block" />
 </div>
+{#if submitted}
+    <div class="min-h-screen p-20 flex flex-col items-center z-50 relative">
+        <h1 class="text-5xl font-bold mb-8">Thank you for your submission!</h1>
+        <p class="text-xl">Your project has been successfully submitted.</p>
+    </div>
+{:else}
 <div class="min-h-screen p-20 flex flex-col items-center z-50 relative">
     <h1 class="text-5xl font-bold mb-8">Let's go!!! You're ready to submit!!</h1>
     
@@ -172,18 +233,42 @@
                 placeholder="https://link-to-paper.com"
             />
         </div>
+
+        <!-- Project Selection -->
+        {#if data.projects && data.projects.length > 0}
+        <div>
+            <label for="projectSelect" class="block text-lg font-semibold mb-2">
+                Select Hackatime Project *
+            </label>
+            <select
+                id="projectSelect"
+                bind:value={selectedProject}
+                required
+                class={selectedProject ? "w-full px-4 py-2 rounded-lg ring-2 ring-green-400 focus:ring-blue-500" : "w-full px-4 py-2 rounded-lg focus:outline-none ring-2 ring-black focus:ring-blue-500"}
+            >
+                <option value="">Select a project</option>
+                {#each data.projects as project}
+                    <option value={project.name}>
+                        {project.name} - {project.hours}h {project.minutes}m
+                    </option>
+                {/each}
+            </select>
+        </div>
+        {/if}
         
         <!-- Submit Button -->
         <button
             type="submit"
+            disabled={submitting}
             class="w-full text-black font-bold  rounded-lg"
             onmouseenter={() => (hoverbutton = true)}
             onmouseleave={() => (hoverbutton = false)}
         >
-            <img src={hoverbutton ? "/yay.png" : "/submit.png"} alt="Submit Project" class={middle2 ? "mx-auto w-80" : "mx-auto w-30"} />
+            <img src={submitting ? "/submit.png" : (hoverbutton ? "/yay.png" : "/submit.png")} alt="Submit Project" class={middle2 ? "mx-auto w-80" : "mx-auto w-30"} />
         </button>
     </form>
 </div>
 <button class="hover:cursor-pointer absolute top-20 left-20 z-50" onclick={() => history.back()}>
     <img src="/back.png" alt="Back Button" class=" w-20"/>
 </button>
+{/if}

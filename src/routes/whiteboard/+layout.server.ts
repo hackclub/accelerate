@@ -39,7 +39,48 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
         throw redirect(303, '/');
     }
 
+    // Fetch user data
+    const userDataResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/${userID}`, {
+        headers: {
+            'Authorization': `${BEARER_TOKEN_BACKEND}`
+        }
+    });
+
+    let userName = '';
+    if (userDataResponse.ok) {
+        const userData = await userDataResponse.json();
+        userName = `${userData.first_name} ${userData.last_name}`;
+    }
+
+    // Fetch user's projects
+    const projectsResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/${userID}/projects`, {
+        headers: {
+            'Authorization': `${BEARER_TOKEN_BACKEND}`
+        }
+    });
+
+    let weekStatus = {
+        week1_2: false,
+        week3_4: false,
+        week5_6: false,
+        week7_8: false,
+        week9_10: false
+    };
+
+    if (projectsResponse.ok) {
+        const projects = await projectsResponse.json();
+        
+        // Check which weeks have submitted projects
+        weekStatus.week1_2 = projects.some((p: any) => p.submission_week === '1&2');
+        weekStatus.week3_4 = projects.some((p: any) => p.submission_week === '3&4');
+        weekStatus.week5_6 = projects.some((p: any) => p.submission_week === '5&6');
+        weekStatus.week7_8 = projects.some((p: any) => p.submission_week === '7&8');
+        weekStatus.week9_10 = projects.some((p: any) => p.submission_week === '9&10');
+    }
+
     return {
-        userID
+        userID,
+        userName,
+        weekStatus
     };
 };

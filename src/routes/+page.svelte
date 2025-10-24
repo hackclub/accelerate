@@ -5,6 +5,8 @@
 
     let innerHeight = $state(0);
     let innerWidth = $state(0);
+	let tooSmall = $derived(innerWidth < 1610 || innerHeight < 765);
+
     let scaleSignInButton = $state(false);
 
     let hcaRedirect = `https://hca.dinosaurbbq.org/oauth/authorize?client_id=${PUBLIC_HC_OAUTH_CLIENT_ID}&redirect_uri=${PUBLIC_HC_OAUTH_REDIRECT_URL}&response_type=${PUBLIC_HC_OAUTH_RESPONSE_TYPE}&scope=email`;
@@ -12,7 +14,7 @@
     onMount(() => {
         document.title = "Accelerate - Build Simulations";
         
-        const error = $page.url.searchParams.get('error');
+        const error = page.url.searchParams.get('error');
         if (error) {
         alert(error);
     }
@@ -57,6 +59,14 @@
         background: #525252;
     }
 </style>
+
+{#if tooSmall}
+	<div class="flex flex-col items-center justify-center min-h-screen p-4 text-center bg-gray-100">
+		<img src="/orpheus-note.png" alt="Favicon" class="w-24 h-24 mb-4" />
+		<h1 class="text-2xl font-bold mb-2">Screen Too Small</h1>
+		<p class="text-lg">Please use a larger device or increase your browser window size to access the content.</p>
+	</div>
+{:else}
 
 <div class="relative w-full min-h-screen overflow-x-hidden">
     <div class="absolute inset-0 z-0">
@@ -105,3 +115,4 @@
         </div>
     </div>
 </div>
+{/if}

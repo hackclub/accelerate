@@ -78,8 +78,8 @@
     <h1 class={expanded ? "hidden" : "absolute top-30 left-15 text-4xl md:text-5xl font-bold z-50 text-neutral-700 drop-shadow-lg"}>
         Week 1 & 2: The Double Pendulum
     </h1>
-    <p class = "absolute bottom-15 left-100">
-        <b class="text-xl">Your Task:</b> <br>
+    <p class = "absolute bottom-15 left-100 text-xl">
+        <b class="text-2xl">Your Task:</b> <br>
         This week you're challenged to build your own Double Pendulum simulation! <br>
         You can write it in anything, as long as you don't use a premade physics engine,<br> and it's shipped as either a web-page,
          or an executable file (think .exe or ELF).<br>
@@ -92,7 +92,7 @@
         <span class="relative left-10">Everything had Mass?</span><br>
         <span class="relative left-10">It was interactive?</span>
     </p>
-    <button class="absolute bottom-25 left-170 hover:cursor-pointer" onclick={() => window.location.replace("/whiteboard/week/1%262/submit")} onmouseenter={() => (hoverSubmit = true)} onmouseleave={() => (hoverSubmit = false)}>
+    <button class="absolute bottom-25 left-180 hover:cursor-pointer" onclick={() => window.location.replace("/whiteboard/week/1%262/submit")} onmouseenter={() => (hoverSubmit = true)} onmouseleave={() => (hoverSubmit = false)}>
         <img src={hoverSubmit ? "/submitgreen.png" : "/submitred.png"} alt="Submit Button" class="w-70"/>
     </button>
     
