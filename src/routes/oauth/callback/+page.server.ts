@@ -46,6 +46,11 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 
         console.log('Access token received:', accessToken);
 
+        const getCompositePrimaryKey = await fetch(`https://hca.dinosaurbbq.org/api/v1/me`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
         // Fetch user by idv token
         const userResponse = await fetch(`https://y08gko88kskgs08kcc80c040.a.selfhosted.hackclub.com/users/by-idv-token/${accessToken}`, {
             headers: {
@@ -53,16 +58,19 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
             }
         });
 
-        if (userResponse.ok) {
-            const user = await userResponse.json();
-            if (user !== null) {
-                cookies.set('userId', user.id, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
-                throw redirect(302, '/whiteboard');
+        if (getCompositePrimaryKey.ok) {
+            const userIDV = await userResponse.json();
+            console.log("ok")
+            if (userIDV !== null) {
+                console.log('User fetched successfully from IDV:', userIDV);
+                cookies.set('userID', userIDV.user_id, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
+            
             } else {
+                console.log('User not found for the given idv token', user);
                 // Logic for user not found
             }
         } else {
-            throw redirect(302, '/');
+            console.log('Failed to fetch user:', await userResponse.json());
         }
 
     } catch (err) {
