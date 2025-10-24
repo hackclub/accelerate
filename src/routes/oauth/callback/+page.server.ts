@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import { HC_OAUTH_CLIENT_SECRET, BEARER_TOKEN_BACKEND } from '$env/static/private';
+import { HC_OAUTH_CLIENT_SECRET, BEARER_TOKEN_BACKEND, BACKEND_DOMAIN_NAME } from '$env/static/private';
 import { PUBLIC_HC_OAUTH_CLIENT_ID, PUBLIC_HC_OAUTH_REDIRECT_URL } from '$env/static/public';
 import type { PageServerLoad } from './$types';
 
@@ -51,27 +51,37 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
                 'Authorization': `Bearer ${accessToken}`
             }
         });
-        // Fetch user by idv token
-        const userResponse = await fetch(`https://y08gko88kskgs08kcc80c040.a.selfhosted.hackclub.com/users/by-idv-token/${accessToken}`, {
+
+        if (!getCompositePrimaryKey.ok) {
+            console.error('Failed to fetch user from IDV');
+            throw redirect(302, '/');
+        }
+
+        const userIDV = await getCompositePrimaryKey.json();
+        console.log('User fetched successfully from IDV:', userIDV);
+
+        const userResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/by-email/${userIDV.identity.primary_email}`, {
             headers: {
-                'api-key': BEARER_TOKEN_BACKEND
+                'Authorization': `${BEARER_TOKEN_BACKEND}`
             }
         });
-
-        if (getCompositePrimaryKey.ok) {
-            const userIDV = await userResponse.json();
-            console.log("ok")
-            if (userIDV !== null) {
-                console.log('User fetched successfully from IDV:', userIDV);
-                cookies.set('userID', userIDV.user_id, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
-            
-            } else {
-                console.log('User not found for the given idv token', user);
-                // Logic for user not found
-            }
-        } else {
-            console.log('Failed to fetch user:', await userResponse.json());
+        
+        if (!userResponse.ok) {
+            console.log('User response status:', userResponse.status);
+            console.error('Failed to fetch user from backend');
+            throw redirect(302, '/');
         }
+
+        const user = await userResponse.json();
+
+        if (!user || !user.user_id) {
+            console.error('User not found for email:', userIDV.email);
+            throw redirect(302, '/');
+        }
+
+        cookies.set('userID', user.user_id, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
+        cookies.set('accessToken', accessToken, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
+        throw redirect(302, '/whiteboard');
 
     } catch (err) {
         console.error('Error exchanging code for token:', err);
