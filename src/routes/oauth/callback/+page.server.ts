@@ -72,17 +72,11 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
                 'Authorization': `${BEARER_TOKEN_BACKEND}`
             }
         });
-        
-        if (!userResponse.ok) {
-            console.log('User response status:', userResponse);
-            console.error('Failed to fetch user from backend');
-            throw redirect(302, '/');
-        } //Remind  me to fix this
 
         let user = await userResponse.json();
 
         if (!user || !user.user_id) {
-            console.log('User not found for emxail, creating new user');
+            console.log('User not found for email, creating new user');
             
             const createUserResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users`, {
                 method: 'POST',
