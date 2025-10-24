@@ -26,7 +26,7 @@
             onclick={logout}
             class="px-4 py-1 rounded-md text-neutral-700 "
         >
-            <img src="/logout.png" alt="Logout" class="w-7 inline-block mr-2" />
+            <img src="/logout.png" alt="Logout" class="w-7 inline-block mr-2 hover:cursor-pointer" />
         </button>
         <div class="flex flex-row items-center gap-2">
             {#if week1_2Box}

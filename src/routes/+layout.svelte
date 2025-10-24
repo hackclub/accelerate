@@ -6,7 +6,7 @@
 
 	let innerWidth = $state(0);
 	let innerHeight = $state(0);
-	let tooSmall = $derived(innerWidth < 1100 || innerHeight < 540);
+	let tooSmall = $derived(innerWidth < 1345 || innerHeight < 790);
 
 	import { onMount } from 'svelte';
 

@@ -4,11 +4,13 @@
     let { data } = $props();
     
     let innerWidth = $state(0);
-    let mediumSize = $derived(innerWidth < 1850);
-    
+    let innerHeight = $state(0);
+    let mediumSize = $derived(innerWidth < 1850 || innerHeight < 1100);
+
     onMount(() => {
         const updateSize = () => {
             innerWidth = window.innerWidth;
+            innerHeight = window.innerHeight;
         };
         
         updateSize();
@@ -35,7 +37,7 @@
     </a>
 </div>
 
-<div class="container mx-auto pt-30 -translate-x-20 px-15">
+<div class="container mx-auto pt-30">
     <h1 class="{mediumSize ? 'text-3xl' : 'text-8xl'} md:text-7xl font-bold text-neutral-700 mb-6">Welcome to Accelerate!!</h1>
     <h2 class="{mediumSize ? 'text-xl' : 'text-2xl'} md:text-3xl font-semibold text-neutral-700 mb-4">The <u>only</u> Physics Based YSWS</h2>
     <h3 class="{mediumSize ? 'text-xl' : 'text-2xl'} md:text-2xl font-medium text-neutral-700 mb-8">
@@ -56,17 +58,16 @@
         
         {#if data.projects.length === 0}
             <p class="{mediumSize ? 'text-xl' : 'text-3xl'} text-neutral-600">No projects</p>
+            <img src="/orpheuscry.png" alt="No Projects" class="w-48 mt-4" />
         {:else}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {#each data.projects.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 3) as project}
                     <a href={project.code_url} target="_blank" rel="noopener noreferrer" class="block {mediumSize ? 'max-w-sm' : ''}">
-                        <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow">
+                        <div class=" rounded-lg shadow-lg overflow-hidden hover:scale-105">
                             {#if project.attachment_urls && project.attachment_urls.length > 0}
                                 <img src={project.attachment_urls[0]} alt={project.project_name} class="w-full {mediumSize ? 'h-24' : 'h-48'} object-cover" />
                             {:else}
-                                <div class="w-full {mediumSize ? 'h-24' : 'h-48'} bg-neutral-200 flex items-center justify-center">
-                                    <p class="{mediumSize ? 'text-xs' : 'text-sm'} text-neutral-500">No image</p>
-                                </div>
+                                <img src="/orpheuscry.png" alt={project.project_name} class="w-full {mediumSize ? 'h-24' : 'h-48'} object-cover" />
                             {/if}
                             <div class="{mediumSize ? 'p-2' : 'p-4'}">
                                 <h3 class="{mediumSize ? 'text-sm' : 'text-xl'} font-bold text-neutral-800 mb-2">{project.project_name}</h3>
