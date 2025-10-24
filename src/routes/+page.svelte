@@ -1,5 +1,6 @@
 <script>
     import { onMount } from 'svelte';
+    import { page } from '$app/state';
     import { PUBLIC_HC_OAUTH_CLIENT_ID, PUBLIC_HC_OAUTH_REDIRECT_URL, PUBLIC_HC_OAUTH_RESPONSE_TYPE } from '$env/static/public';
 
     let innerHeight = $state(0);
@@ -10,6 +11,11 @@
 
     onMount(() => {
         document.title = "Accelerate - Build Simulations";
+        
+        const error = $page.url.searchParams.get('error');
+        if (error) {
+        alert(error);
+    }
 
         const updateSize = () => {
             innerHeight = window.innerHeight;
@@ -24,6 +30,7 @@
             window.removeEventListener('resize', updateSize);
         };
     });
+
 </script>
 
 <style>

@@ -79,15 +79,44 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
             throw redirect(302, '/');
         }
 
-        const user = await userResponse.json();
+        let user = await userResponse.json();
 
         if (!user || !user.user_id) {
-            console.error('User not found for email:', userIDV.email);
-            throw redirect(302, '/');
+            console.log('User not found for email, creating new user');
+            
+            const createUserResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${BEARER_TOKEN_BACKEND}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    first_name: userIDV.identity.first_name || '',
+                    last_name: userIDV.identity.last_name || '',
+                    slack_id: userIDV.identity.slack_id || '',
+                    email: userIDV.identity.primary_email,
+                    is_admin: false,
+                    address_line_1: userIDV.identity.addresses?.[0]?.line_1 || '',
+                    address_line_2: userIDV.identity.addresses?.[0]?.line_2 || '',
+                    city: userIDV.identity.addresses?.[0]?.city || '',
+                    state: userIDV.identity.addresses?.[0]?.state || '',
+                    country: userIDV.identity.addresses?.[0]?.country_code || '',
+                    post_code: userIDV.identity.addresses?.[0]?.postal_code || '',
+                    birthday: new Date().toISOString()
+                })
+            });
+
+            if (!createUserResponse.ok) {
+                console.error('Failed to create user');
+                throw redirect(302, '/?error=' + encodeURIComponent('Error creating user, you may need to update your IDV settings in Hack Club Account'));
+            }
+
+            user = await createUserResponse.json();
         }
 
         const hashedUserID = hashUserID(user.user_id);
         cookies.set('userID', hashedUserID, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
+        cookies.set('accessToken', accessToken, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
         throw redirect(302, '/whiteboard');
 
     } catch (err) {
