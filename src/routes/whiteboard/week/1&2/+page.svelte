@@ -39,12 +39,12 @@
     <a href="/whiteboard" class="fixed top-12 right-12 z-50">
         <div class="flex flex-col items-center gap-2">
             <img src="/arrow.jpg" alt="Up Arrow" class="w-16 md:w-20 -rotate-90"/>
-            <p class="text-xl font-semibold">Up to Whiteboard</p>
+            <p class="text-3xl font-semibold">Up to Whiteboard</p>
         </div>
     </a>
     <a href="/whiteboard/leaderboard" class="fixed bottom-12 right-12 z-50">
         <div class="flex flex-col items-center gap-2 ">
-            <p class="text-xl font-semibold">Down to Leaderboard</p>
+            <p class="text-3xl font-semibold">Down to Leaderboard</p>
             <img src="/arrow.jpg" alt="Down Arrow" class="w-16 md:w-20 rotate-90" />
         </div>
     </a>
@@ -78,19 +78,19 @@
     <h1 class={expanded ? "hidden" : "absolute top-30 left-15 text-4xl md:text-5xl font-bold z-50 text-neutral-700 drop-shadow-lg"}>
         Week 1 & 2: The Double Pendulum
     </h1>
-    <p class = "absolute bottom-15 left-100 text-xl">
-        <b class="text-2xl">Your Task:</b> <br>
+    <p class = "absolute bottom-17 left-100 text-xl font-pangolin">
+        <b class="text-4xl font-pangolin">Your Task:</b> <br>
         This week you're challenged to build your own Double Pendulum simulation! <br>
         You can write it in anything, as long as you don't use a premade physics engine,<br> and it's shipped as either a web-page,
          or an executable file (think .exe or ELF).<br>
          You can also submit a paper if you feel like it, but that's completely optional.<br>
-         <b class="text-xl">Ideas:</b> <br>
-        What if: <br>
-        <span class="relative left-10">The rods were strings?</span><br>
-        <span class="relative left-10">There was air resistance?</span><br>
-        <span class="relative left-10">The model was 3D?</span><br>
-        <span class="relative left-10">Everything had Mass?</span><br>
-        <span class="relative left-10">It was interactive?</span>
+         <b class="text-4xl font-pangolin">Ideas:</b> <br>
+        <span class="text-2xl font-pangolin">What if: <br>
+        <span class="relative left-10 text-2xl font-pangolin">The rods were strings?</span><br>
+        <span class="relative left-10 text-2xl font-pangolin">There was air resistance?</span><br>
+        <span class="relative left-10 text-2xl font-pangolin">The model was 3D?</span><br>
+        <span class="relative left-10 text-2xl font-pangolin">Everything had Mass?</span><br>
+        <span class="relative left-10 text-2xl font-pangolin">It was interactive?</span>
     </p>
     <button class="absolute bottom-25 left-180 hover:cursor-pointer" onclick={() => window.location.replace("/whiteboard/week/1%262/submit")} onmouseenter={() => (hoverSubmit = true)} onmouseleave={() => (hoverSubmit = false)}>
         <img src={hoverSubmit ? "/submitgreen.png" : "/submitred.png"} alt="Submit Button" class="w-70"/>

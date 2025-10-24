@@ -1,0 +1,13 @@
+node_modules
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+.svelte-kit
+build
+.vercel
+.output
+.netlify
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

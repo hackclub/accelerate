@@ -9,6 +9,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Pangolin';
+  src: url('/fonts/Pangolin-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 * {
   font-family: 'Permanent Marker', cursive, sans-serif;
 }
@@ -70,5 +78,10 @@
       .no-scrollbar {
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
+      }
+
+      /* Custom font utilities */
+      .font-pangolin {
+        font-family: 'Pangolin', cursive, sans-serif !important;
       }
     }
