@@ -1,7 +1,16 @@
-import { redirect } from '@sveltejs/kit';
-import { HC_OAUTH_CLIENT_SECRET, BEARER_TOKEN_BACKEND, BACKEND_DOMAIN_NAME } from '$env/static/private';
+import { redirect, isRedirect, isHttpError } from '@sveltejs/kit';
+import { HC_OAUTH_CLIENT_SECRET, BEARER_TOKEN_BACKEND, BACKEND_DOMAIN_NAME, ENCRYPTION_KEY } from '$env/static/private';
 import { PUBLIC_HC_OAUTH_CLIENT_ID, PUBLIC_HC_OAUTH_REDIRECT_URL } from '$env/static/public';
 import type { PageServerLoad } from './$types';
+import { createCipheriv, randomBytes } from 'crypto';
+
+function hashUserID(userID: string): string {
+    const iv = randomBytes(16);
+    const cipher = createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY, 'hex'), iv);
+    let encrypted = cipher.update(userID, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return iv.toString('hex') + ':' + encrypted;
+}
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
     const code = url.searchParams.get('code');
@@ -41,10 +50,8 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
             throw redirect(302, '/');
         }
 
-        const data = await tokenResponse.json();
-        const accessToken = data.access_token;
-
-        console.log('Access token received:', accessToken);
+    const data = await tokenResponse.json();
+    const accessToken = data.access_token;
 
         const getCompositePrimaryKey = await fetch(`https://hca.dinosaurbbq.org/api/v1/me`, {
             headers: {
@@ -60,7 +67,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
         const userIDV = await getCompositePrimaryKey.json();
         console.log('User fetched successfully from IDV:', userIDV);
 
-        const userResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/by-email/${userIDV.identity.primary_email}`, {
+        const userResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/by-email/${encodeURIComponent(userIDV.identity.primary_email)}`, {
             headers: {
                 'Authorization': `${BEARER_TOKEN_BACKEND}`
             }
@@ -79,11 +86,15 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
             throw redirect(302, '/');
         }
 
-        cookies.set('userID', user.user_id, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
-        cookies.set('accessToken', accessToken, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
+        const hashedUserID = hashUserID(user.user_id);
+        cookies.set('userID', hashedUserID, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
         throw redirect(302, '/whiteboard');
 
     } catch (err) {
+        // If this is an intentional redirect or an HTTP error from SvelteKit, rethrow it untouched
+        if (isRedirect(err) || isHttpError(err)) {
+            throw err;
+        }
         console.error('Error exchanging code for token:', err);
         throw redirect(302, '/');
     }

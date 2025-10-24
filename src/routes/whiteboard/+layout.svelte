@@ -9,8 +9,8 @@
 
     let currentUser = "placeholder_user";
 
-    function logout() {
-        console.log("Logging out...");
+    async function logout() {
+        await fetch('/api/logout', { method: 'POST' });
         window.location.replace("/");
     }
 </script>
