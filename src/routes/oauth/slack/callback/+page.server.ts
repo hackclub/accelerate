@@ -1,0 +1,139 @@
+import { redirect, isRedirect, isHttpError } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+import { PUBLIC_SLACK_CLIENT_ID, PUBLIC_SLACK_OAUTH_STATE, PUBLIC_SLACK_OAUTH_NONCE, PUBLIC_SLACK_REDIRECT_URI } from '$env/static/public';
+import { SLACK_CLIENT_SECRET, BEARER_TOKEN_BACKEND, BACKEND_DOMAIN_NAME, ENCRYPTION_KEY, npm_config_cache } from '$env/static/private';
+import { createCipheriv, randomBytes } from 'crypto';
+
+function hashUserID(userID: string): string {
+    const iv = randomBytes(16);
+    const cipher = createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY, 'hex'), iv);
+    let encrypted = cipher.update(userID, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return iv.toString('hex') + ':' + encrypted;
+}
+
+export const load: PageServerLoad = async ({ url, cookies }) => {
+    const code1 = url.searchParams.get('code');
+    const error = url.searchParams.get('error');
+
+    if (error) {
+        console.error('Slack OAuth error:', error);
+        throw redirect(302, '/');
+    }
+
+    if (!code1) {
+        console.error('No authorization code received');
+        throw redirect(302, '/');
+    }
+
+    try {
+        const params = new URLSearchParams({
+            code: code1,
+            client_id: PUBLIC_SLACK_CLIENT_ID,
+            client_secret: SLACK_CLIENT_SECRET,
+            redirect_uri: PUBLIC_SLACK_REDIRECT_URI
+        });
+
+        const slackResponse = await fetch('https://slack.com/api/oauth.v2.access', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params.toString()
+        });
+
+        if (!slackResponse.ok) {
+            const errorText = await slackResponse.text();
+            console.error('Slack HTTP error:', slackResponse.status, errorText);
+            throw redirect(302, '/');
+        }
+
+        const data = await slackResponse.json();
+        //console.log('Slack OAuth response:', data);
+
+        if (!data.ok) {
+            console.error('Slack API error:', data.error);
+            throw redirect(302, '/');
+        }
+
+        const accessToken = data.authed_user?.access_token;
+        
+        if (!accessToken) {
+            console.error('No access token in Slack response');
+            throw redirect(302, '/');
+        }
+
+        // Get user identity from Slack
+        const identityResponse = await fetch('https://slack.com/api/users.identity', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        const identityData = await identityResponse.json();
+        //console.log('Slack identity data:', identityData);
+
+        if (!identityData.ok) {
+            console.error('Failed to get Slack user identity:', identityData.error);
+            throw redirect(302, '/');
+        }
+
+        const slackID = identityData.user?.id;
+        const email = identityData.user?.email;
+        const firstName = identityData.user?.name;
+
+        const userResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/by-email/${encodeURIComponent(email)}`, {
+            headers: {
+                'Authorization': `${BEARER_TOKEN_BACKEND}`
+            }
+        });
+
+        let user1 = await userResponse.json();
+
+        if (!user1 || !user1.user_id) {
+            //console.log('User not found for email, creating new user');
+            
+            const createUserResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `${BEARER_TOKEN_BACKEND}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    first_name: firstName || '',
+                    last_name: '',
+                    slack_id: slackID || '',
+                    email: email,
+                    is_admin: false,
+                    address_line_1: '',
+                    address_line_2: '',
+                    city: '',
+                    state: '',
+                    country: '',
+                    post_code: '',
+                    birthday: '',
+                })
+            });
+
+            if (!createUserResponse.ok) {
+                console.error('Failed to create user');
+                throw redirect(302, '/?error=' + encodeURIComponent('Error creating user, you may need to update your IDV settings in Hack Club Account'));
+            }
+
+            user1 = await createUserResponse.json();
+        }
+
+        ////console.log('User logged in:', user1.user_id);
+        const hashedUserID = hashUserID(user1.user_id);
+        cookies.set('userID', hashedUserID, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
+        throw redirect(302, '/whiteboard');
+
+
+    } catch (err) {
+        if (isRedirect(err) || isHttpError(err)) {
+            throw err;
+        }
+        console.error('Error processing Slack OAuth:', err);
+        throw redirect(302, '/');
+    }
+};
