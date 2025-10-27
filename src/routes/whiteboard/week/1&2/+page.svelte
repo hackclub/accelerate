@@ -5,19 +5,31 @@
     let innerWidth = $state(0);
     let expanded = $state(false);
     let hoverSubmit = $state(false);
+    let countdown = $state('');
 
     function toggleExpand() {
         expanded = !expanded;
     }
 
     onMount(() => {
-        const now = new Date();
+        const targetDate = new Date('2025-11-10T00:00:00-05:00'); // November 10, 2025, 12:00 AM EST
 
-        //if (now.getMonth() === 12 && now.getDate() >= 20) {
-        //    document.title = "Week 1 & 2 - Double Pendulum";
-        //} else {
-          //  window.location.replace("whiteboard");
-        //}
+        const updateCountdown = () => {
+            const now = new Date();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                countdown = 'Deadline passed!';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            countdown = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        };
 
         const updateSize = () => {
             innerHeight = window.innerHeight;
@@ -25,10 +37,13 @@
         };
 
         updateSize();
+        updateCountdown();
 
+        const countdownInterval = setInterval(updateCountdown, 1000);
         window.addEventListener('resize', updateSize);
 
         return () => {
+            clearInterval(countdownInterval);
             window.removeEventListener('resize', updateSize);
         };
     });
@@ -79,7 +94,8 @@
     <h1 class={expanded ? "hidden" : "absolute top-30 left-15 text-4xl md:text-5xl font-bold z-50 text-neutral-700 drop-shadow-lg"}>
         Week 1 & 2: The Double Pendulum
     </h1>
-    <p class={expanded ? "hidden" : "absolute top-50 left-15 text-2xl md:text-2xl z-50 text-neutral-700 drop-shadow-lg hover:text-neutral-400 hover:underline hover:cursor-pointer"}> <a href="/whiteboard/rules">Rules + Judging Rubric + scoring Info</a></p>
+    <p class={expanded ? "hidden" : "absolute top-45 left-15 text-3xl md:text-3xl z-50 text-neutral-700 drop-shadow-lg hover:text-neutral-400 underline hover:font-bold hover:cursor-pointer"}> <a href="/whiteboard/rules">Rules + Judging Rubric + scoring Info</a></p>
+    <p class={expanded ? "hidden" : "absolute top-55 left-15 text-2xl md:text-2xl z-50 text-neutral-700 drop-shadow-lg"}>Submission Deadline:  T-{countdown}</p>
     <p class = "absolute bottom-17 left-100 text-xl font-pangolin">
         <b class="text-4xl font-pangolin">Your Task:</b> <br>
         This week you're challenged to build your own Double Pendulum simulation! <br>
