@@ -89,9 +89,27 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
         });
 
         let user1 = await userResponse.json();
-
+        console.log('User fetched by email:', user1);
         if (!user1 || !user1.user_id) {
-            //console.log('User not found for email, creating new user');
+            console.log('User not found for email, creating new user');
+            
+            const requestBody = {
+                first_name: firstName || null,
+                last_name: ' ',
+                slack_id: slackID,
+                email: email,
+                is_admin: false,
+                address_line_1: null,
+                address_line_2: null,
+                city: null,
+                state: null,
+                country: null,
+                post_code: null,
+                birthday: null,
+            };
+
+            console.log('Creating user with request body:', requestBody);
+            console.log('Request URL:', `https://${BACKEND_DOMAIN_NAME}/users`);
             
             const createUserResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users`, {
                 method: 'POST',
@@ -99,28 +117,20 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
                     'Authorization': `${BEARER_TOKEN_BACKEND}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    first_name: firstName || '',
-                    last_name: '',
-                    slack_id: slackID || '',
-                    email: email,
-                    is_admin: false,
-                    address_line_1: '',
-                    address_line_2: '',
-                    city: '',
-                    state: '',
-                    country: '',
-                    post_code: '',
-                    birthday: '',
-                })
+                body: JSON.stringify(requestBody)
             });
 
+            console.log('Create user response status:', createUserResponse.status);
+
             if (!createUserResponse.ok) {
-                console.error('Failed to create user');
+                const errorBody = await createUserResponse.text();
+                console.error('Failed to create user. Response:', errorBody);
                 throw redirect(302, '/?error=' + encodeURIComponent('Error creating user, you may need to update your IDV settings in Hack Club Account'));
             }
 
-            user1 = await createUserResponse.json();
+            const responseBody = await createUserResponse.text();
+            console.log('Create user response body:', responseBody);
+            user1 = JSON.parse(responseBody);
         }
 
         ////console.log('User logged in:', user1.user_id);
