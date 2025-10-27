@@ -1,3 +1,9 @@
+<style>
+    :global(html, body) {
+        overflow: auto !important;
+        height: auto !important;
+    }
+</style>
 
 <div class="absolute inset-0 z-0">
         <img src="/top-whiteboard.png" alt="" class="w-full h-auto block" />
