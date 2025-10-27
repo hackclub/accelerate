@@ -78,6 +78,7 @@
     <h1 class={expanded ? "hidden" : "absolute top-30 left-15 text-4xl md:text-5xl font-bold z-50 text-neutral-700 drop-shadow-lg"}>
         Week 1 & 2: The Double Pendulum
     </h1>
+    <p class={expanded ? "hidden" : "absolute top-50 left-15 text-2xl md:text-2xl z-50 text-neutral-700 drop-shadow-lg hover:text-neutral-400 hover:underline hover:cursor-pointer"}> <a href="/whiteboard/rules">Rules + Judging Rubric + scoring Info</a></p>
     <p class = "absolute bottom-17 left-100 text-xl font-pangolin">
         <b class="text-4xl font-pangolin">Your Task:</b> <br>
         This week you're challenged to build your own Double Pendulum simulation! <br>
