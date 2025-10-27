@@ -34,7 +34,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
             redirect_uri: PUBLIC_SLACK_REDIRECT_URI
         });
 
-        const slackResponse = await fetch('https://slack.com/api/oauth.v2.access', {
+        const slackResponse = await fetch('https://slack.com/api/openid.connect.token', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -49,38 +49,31 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
         }
 
         const data = await slackResponse.json();
-        //console.log('Slack OAuth response:', data);
+        console.log('Full Slack OpenID Connect response:', JSON.stringify(data, null, 2));
+        console.log('id_token present?', !!data.id_token);
+        console.log('Response keys:', Object.keys(data));
 
         if (!data.ok) {
             console.error('Slack API error:', data.error);
             throw redirect(302, '/');
         }
 
-        const accessToken = data.authed_user?.access_token;
+        // For OpenID Connect, decode the id_token instead of calling API
+        const idToken = data.id_token;
         
-        if (!accessToken) {
-            console.error('No access token in Slack response');
+        if (!idToken) {
+            console.error('No id_token in OpenID Connect response');
+            console.error('Full response for debugging:', data);
             throw redirect(302, '/');
         }
 
-        // Get user identity from Slack
-        const identityResponse = await fetch('https://slack.com/api/users.identity', {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
+        // Decode JWT (id_token) - split by '.' and decode the payload (middle part)
+        const tokenPayload = JSON.parse(Buffer.from(idToken.split('.')[1], 'base64').toString());
+        console.log('OpenID token payload:', tokenPayload);
 
-        const identityData = await identityResponse.json();
-        //console.log('Slack identity data:', identityData);
-
-        if (!identityData.ok) {
-            console.error('Failed to get Slack user identity:', identityData.error);
-            throw redirect(302, '/');
-        }
-
-        const slackID = identityData.user?.id;
-        const email = identityData.user?.email;
-        const firstName = identityData.user?.name;
+        const slackID = tokenPayload.sub?.replace('https://slack.com/user_id/', '');
+        const email = tokenPayload.email;
+        const firstName = tokenPayload.name;
 
         const userResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/by-email/${encodeURIComponent(email)}`, {
             headers: {
