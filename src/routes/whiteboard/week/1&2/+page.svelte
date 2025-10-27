@@ -54,6 +54,7 @@
         scrolling="no"
         title="Simulation"
     ></iframe>
+    <!--<video src="/pendulumbid.mp4" autoplay loop muted class="absolute w-3/4 h-[75vh] overflow-hidden scale-120 z-40 -right-100 drop-shadow-6xl" style="mix-blend-mode: lighten;"></video>-->
     <div class={expanded
         ? "fixed inset-0 z-50 w-screen h-screen"
         : "absolute left-10 bottom-15 w-full max-w-[20rem] h-[55vh] z-40 rounded-lg"}>
