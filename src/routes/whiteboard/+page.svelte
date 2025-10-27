@@ -67,7 +67,7 @@
             <li>3rd: <a href="https://www.apple.com/ipad-air/" class="underline hover:text-neutral-400">M3 iPad Air</a> or <a href="https://www.apple.com/mac-mini/" class="underline hover:text-neutral-400">M4 Mac Mini</a></li>
             <li>4th - 10th: <a href="https://www.casio.com/us/scientific-calculators/product.FX-CG50/" class="underline hover:text-neutral-400">Casio FX-CG50 Graphing Calculator</a></li>
             <li>11th-20th: <a href="https://www.solidworks.com/product/students" class="underline hover:text-neutral-400">A Year Long Solidworks Subscription</a></li>
-            <li>Everyone: A Physics Themed Sticker Sheet!</li>
+            <li>Everyone: A Physics Themed Sticker Sheet and Hack Club Ruler!</li>
         </ul>
     </h3>
 
