@@ -30,29 +30,29 @@
         </button>
         <div class="flex flex-row items-center gap-2">
             {#if week1_2Box}
-            <img src="/greenBox.png" alt="green week 1_2" class="w-20 h-20"/>
+            <img src="/greenBox.png" alt="green week 1_2" class="w-15 h-15 px-2"/>
             {:else}
-            <img src="/blackBox.png" alt="black week 1_2" class="w-20 h-20"/>
+            <img src="/blackBox.png" alt="black week 1_2" class="w-15 h-15 px-2"/>
             {/if}
             {#if week3_4Box}
-            <img src="/greenBox.png" alt="green week 3_4" class="w-20 h-20"/>
+            <img src="/greenBox.png" alt="green week 3_4" class="w-15 h-15 px-2"/>
             {:else}
-            <img src="/blackBox.png" alt="black week 3_4" class="w-20 h-20"/>
+            <img src="/blackBox.png" alt="black week 3_4" class="w-15 h-15 px-2"/>
             {/if}
             {#if week5_6Box}
-            <img src="/greenBox.png" alt="green week 5_6" class="w-20 h-20"/>
+            <img src="/greenBox.png" alt="green week 5_6" class="w-15 h-15 px-2"/>
             {:else}
-            <img src="/blackBox.png" alt="black week 5_6" class="w-20 h-20"/>
+            <img src="/blackBox.png" alt="black week 5_6" class="w-15 h-15 px-2"/>
             {/if}
             {#if week7_8Box}
-            <img src="/greenBox.png" alt="green week 7_8" class="w-20 h-20"/>
+            <img src="/greenBox.png" alt="green week 7_8" class="w-15 h-15 px-2"/>
             {:else}
-            <img src="/blackBox.png" alt="black week 7_8" class="w-20 h-20"/>
+            <img src="/blackBox.png" alt="black week 7_8" class="w-15 h-15 px-2"/>
             {/if}
             {#if week9_10Box}
-            <img src="/greenBox.png" alt="green week 9_10" class="w-20 h-20"/>
+            <img src="/greenBox.png" alt="green week 9_10" class="w-15 h-15 px-2"/>
             {:else}
-            <img src="/blackBox.png" alt="black week 9_10" class="w-20 h-20"/>
+            <img src="/blackBox.png" alt="black week 9_10" class="w-15 h-15 px-2"/>
             {/if}
         </div>
     </div>
