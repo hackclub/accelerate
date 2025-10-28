@@ -103,7 +103,7 @@
          or an executable file (think .exe or ELF).<br>
          You can also submit a paper if you feel like it, but that's completely optional.<br>
          <b class="text-4xl font-pangolin">Ideas:</b> <br>
-        <span class="text-2xl font-pangolin">What if: <br>
+        <span class="text-2xl font-pangolin">What if:</span> <br>
         <span class="relative left-10 text-2xl font-pangolin">The rods were strings?</span><br>
         <span class="relative left-10 text-2xl font-pangolin">There was air resistance?</span><br>
         <span class="relative left-10 text-2xl font-pangolin">The model was 3D?</span><br>
