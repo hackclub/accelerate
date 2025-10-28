@@ -31,7 +31,7 @@
         <tbody class="bg-neutral-50/40">
             <tr>
                 <td class="border border-neutral-300 p-4 text-bold text-2xl">Creativity</td>
-                <td class="border border-neutral-300 p-4 font-pangolin text-xl">We want to see you build cool stuff.  Think about what you could do to present your model in a cool way. Maybe you could relate the model to something you see in everyday life. Like Projectile Motion to a snowball fight. We want you to be creative when it comes to developing your models. When you take your model beyond just being a simulation, and you turn it into something that's a part of your other projects, that's when you'll score highly. Other reasons you could score highly are by including creative parameters </td>
+                <td class="border border-neutral-300 p-4 font-pangolin text-xl">We want to see you build cool stuff.  Think about what you could do to present your model in a cool way. Maybe you could relate the model to something you see in everyday life. Like Projectile Motion to a snowball fight. We want you to be creative when it comes to developing your models. When you take your model beyond just being a simulation, and you turn it into something that's a part of your other projects, that's when you'll score highly. Other reasons you could score highly are by including creative parameters or extending the model beyond it's original scope! </td>
                 <td class="border border-neutral-300 p-4 text-2xl text-blue-700">x / 50</td>
             </tr>
             <tr>
