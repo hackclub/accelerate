@@ -95,7 +95,7 @@
                 <img src="orpheus-note.png" alt="Sticky Note Block Accelerate" class="absolute right-30 scale-100" />
                 <div class="absolute right-150 top-5 z-20 px-10 py-30">
                     <h1 class="text-8xl font-bold mb-4 text-neutral-700">2. Submit and Vote</h1>
-                    <p class="text-3xl mb-6 text-neutral-700 px-8" >Your simulations will be voted on by your peers, and ranked every 2 weeks.<br> Your final rankings  </p>
+                    <p class="text-3xl mb-6 text-neutral-700 px-8" >Your simulations will be voted on by us at HQ, and ranked every 2 weeks.<br> Your final rankings  </p>
                 </div>
             </div>
             <div class="absolute z-20 rotate-1 w-full p-10" style="top: {innerHeight + 2.5*innerHeight/3}px;">
