@@ -41,7 +41,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
         }
 
         // Fetch Hackatime projects
-        const hackatimeResponse = await fetch(`https://hackatime.hackclub.com/api/v1/users/${user.slack_id}/stats?features=projects&start_date=2025-10-18`);
+        const hackatimeResponse = await fetch(`https://hackatime.hackclub.com/api/v1/users/${user.slack_id}/stats?features=projects&start_date=2025-10-26`);
 
         if (!hackatimeResponse.ok) {
             return { userID, projects: [] };
