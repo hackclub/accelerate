@@ -39,6 +39,15 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
         throw redirect(303, '/');
     }
 
+    // Send logged in notification
+    const loginResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/${userID}/loggedin`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `${BEARER_TOKEN_BACKEND}`
+        }
+    });
+    console.log(`Logged in notification sent for user ${userID}`, loginResponse);
+
     // Fetch user data
     const userDataResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/${userID}`, {
         headers: {
