@@ -101,7 +101,7 @@
                 <img src="orpheus-note.png" alt="Sticky Note Block Accelerate" class={mobileLayout ? "hidden" : "absolute right-30 scale-100"} />
                 <div class={mobileLayout ? "absolute top-1 z-20 px-10 py-30" : "absolute right-150 top-5 z-20 px-10 py-30"}>
                     <h1 class={mobileLayout ? "text-2xl font-bold mb-4 text-neutral-700" : "text-8xl font-bold mb-4 text-neutral-700"}>2. Submit and Vote</h1>
-                    <p class={mobileLayout ? "text-md mb-6 text-neutral-700 px-8" : "text-3xl mb-6 text-neutral-700 px-8"} >Your simulations will be voted on by us at HQ, and ranked every 2 weeks.<br> Your final rankings  </p>
+                    <p class={mobileLayout ? "text-md mb-6 text-neutral-700 px-8" : "text-3xl mb-6 text-neutral-700 px-8"} >Your simulations will be voted on by us at HQ, and ranked every 2 weeks.<br> Your final rankings will be determined using a superscore. </p>
                 </div>
             </div>
             <div class={mobileLayout ? "absolute z-20 rotate-1 w-full p-10" : "absolute z-20 rotate-1 w-full p-10"} style={mobileLayout ? "top: 900px;" : `top: ${innerHeight + 2.5*innerHeight/3}px;`}>
