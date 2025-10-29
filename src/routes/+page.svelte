@@ -6,8 +6,6 @@
     let innerHeight = $state(0);
     let innerWidth = $state(0);
 	let tooSmall = $derived(innerWidth < 1610 || innerHeight < 765);
-    let smallLayout = $derived(innerWidth > 1200 && innerWidth < 1246);
-    let mobileLayout = $derived(innerWidth <= 1200);
 
     let scaleSignInButton = $state(false);
 
@@ -63,7 +61,6 @@
     }
 </style>
 
-<!--
 {#if tooSmall}
 	<div class="flex flex-col items-center justify-center min-h-screen p-4 text-center bg-gray-100">
 		<img src="/orpheus-note.png" alt="Favicon" class="w-24 h-24 mb-4" />
@@ -71,24 +68,21 @@
 		<p class="text-xl">Zoom out a bit - trust me its better for you</p>
 	</div>
 {:else}
--->
+
 <div class="relative w-full min-h-screen overflow-x-hidden">
     <div class="absolute inset-0 z-0">
         <img src="/top-whiteboard.png" alt="" class="w-full h-auto block" />
         <img src="/middle-whiteboard.png" alt="" class="w-full h-auto block" />
         <img src="/middle-2-whiteboard.png" alt="" class="w-full h-auto block" />
-        {#if mobileLayout}<img src="/middle-whiteboard.png" alt="" class="w-full h-auto block" />
-        <img src="/middle-2-whiteboard.png" alt="" class="w-full h-auto block" />
         <img src="/bottom-whiteboard.png" alt="" class="w-full h-auto block" />
-        {/if}
     </div>
     
     <div class="relative z-10 p-10">
-        <img src="cloud-note-2.png" alt="Cloud Note" class={mobileLayout ? "absolute top-0 left-0 -translate-y-10 -translate-x-10 -rotate-6 scale-30  cursor-pointer shadow-lg shadow-black" :"absolute top-20 left-20 -rotate-6 scale-100  cursor-pointer shadow-lg shadow-black"} />
-        <img src="cloud-note2.png" alt="Cloud Note 2" class={mobileLayout ?"absolute top-2 right-3 -translate-y-10 translate-x-10 rotate-6 scale-40  cursor-pointer z-30 " : "absolute top-25 right-13 rotate-6 scale-100  cursor-pointer z-30 "} />
-        <img src="hand-graph.png" alt="Hand Graph" class={mobileLayout ? "hidden" : "absolute z-20 top-20 right-30 scale-100"} />
-        <img src="sticky-scroll-down.png" alt="Sticky Scroll Down" class={mobileLayout ? "absolute z-20 top-40 right-0 scale-35" : "absolute z-20 top-150 right-50 scale-100"} />
-        <img src="Logo.png" alt="Logo" class={mobileLayout ? "absolute z-20 top-30 left-2 -translate-x-10 scale-70" : "absolute z-20 top-110 left-20 scale-100"} />
+        <img src="cloud-note-2.png" alt="Cloud Note" class="absolute top-20 left-20 -rotate-6 scale-100  cursor-pointer shadow-lg shadow-black" />
+        <img src="cloud-note2.png" alt="Cloud Note 2" class="absolute top-25 right-13 rotate-6 scale-100  cursor-pointer z-30 " />
+        <img src="hand-graph.png" alt="Hand Graph" class="absolute z-20 top-20 right-30 scale-100" />
+        <img src="sticky-scroll-down.png" alt="Sticky Scroll Down" class="absolute z-20 top-150 right-50 scale-100" />
+        <img src="Logo.png" alt="Logo" class="absolute z-20 top-110 left-20" />
         <div>
             <div class={mobileLayout ? "absolute z-20 rotate-1 w-full p-10" : "absolute z-20 rotate-1 w-full p-10"} style={mobileLayout ? "top: 300px;" : `top: ${innerHeight}px;`}>
                 <img src="block-note.png" alt="Sticky Note Block Accelerate" class={mobileLayout ? "hidden" : "relative left-30 scale-100"} />
@@ -111,7 +105,7 @@
                     <p class={mobileLayout ? "text-md mb-6 text-neutral-700 px-8" : "text-3xl mb-6 text-neutral-700 px-8"} >We'll be giving away Prizes like Macbooks, iPads, and Stickers based off your ranking at the end of the event!</p>
                 </div>
             </div>
-            <div style="top: {innerHeight *2.3}px;" class={mobileLayout ? "hidden" : "absolute z-20 text-center w-full"}>
+            <div style="top: {innerHeight *2.3}px;" class="absolute z-20 text-center w-full">
                 <h1 class="text-4xl text-neutral-700">Sign Up Now!</h1>
             </div>
             <img src="graph.png" alt="Graph" class={mobileLayout ? "hidden" :"absolute right-15 rotate-10"} style={mobileLayout ? "" : `top: ${innerHeight* 2.35}px`}/>
@@ -122,4 +116,4 @@
         </div>
     </div>
 </div>
-<!--{/if}-->
+{/if}
