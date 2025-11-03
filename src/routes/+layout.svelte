@@ -1,14 +1,14 @@
 <script lang="ts">
-	import '../app.css';
-	import favicon from '$lib/assets/favicon.svg';
-	
+	import "../app.css";
+	import favicon from "$lib/assets/favicon.svg";
+
 	let { children } = $props();
 
 	let innerWidth = $state(0);
 	let innerHeight = $state(0);
 	let tooSmall = $derived(innerWidth < 1345 || innerHeight < 790);
 
-	import { onMount } from 'svelte';
+	import { onMount } from "svelte";
 
 	onMount(() => {
 		const updateSize = () => {
@@ -18,10 +18,10 @@
 
 		updateSize();
 
-		window.addEventListener('resize', updateSize);
+		window.addEventListener("resize", updateSize);
 
 		return () => {
-			window.removeEventListener('resize', updateSize);
+			window.removeEventListener("resize", updateSize);
 		};
 	});
 </script>
@@ -30,14 +30,14 @@
 	<link rel="icon" type="image/png" href="/orpheus-note.png" />
 </svelte:head>
 
-{#if tooSmall}
+<!-- {#if tooSmall}
 	<div class="flex flex-col items-center justify-center min-h-screen p-4 text-center bg-gray-100">
 		<img src="/orpheus-note.png" alt="Favicon" class="w-24 h-24 mb-4" />
 		<h1 class="text-3xl font-bold mb-2">Screen Too Small</h1>
 		<p class="text-2xl">Please use a larger device or increase your browser window size to access the content.</p>
 		<p class="text-2xl"> Psst! Ctrl Shift - on Windows and Option Command - on Mac</p>
 	</div>
-{:else}
+{:else} -->
 
 {@render children?.()}
-{/if}
+<!-- {/if} -->
