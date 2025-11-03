@@ -42,10 +42,10 @@
 </script>
 {#if hackatimeAcknowledged}
 <div>
-    <a href="/whiteboard/leaderboard" class="fixed top-12 right-12 z-50">
+    <a href="/whiteboard/gallery" class="fixed top-12 right-12 z-50">
         <div class="flex flex-col items-center gap-2">
             <img src="/arrow.jpg" alt="Up Arrow" class="w-16 md:w-20 -rotate-90"/>
-            <p class="text-3xl font-semibold">Up to Leaderboard</p>
+            <p class="text-3xl font-semibold">Up to Gallery</p>
         </div>
     </a>
     <a href="/whiteboard/week/1&2" class="fixed bottom-12 right-12 z-50">

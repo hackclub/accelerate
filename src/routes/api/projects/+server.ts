@@ -1,29 +1,32 @@
+import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { BACKEND_DOMAIN_NAME, BEARER_TOKEN_BACKEND } from '$env/static/private';
-import { json } from '@sveltejs/kit';
 
-export const POST: RequestHandler = async ({ request }) => {
+export const GET: RequestHandler = async ({ url }) => {
+    const skip = url.searchParams.get('skip') || '0';
+    const limit = url.searchParams.get('limit') || '100';
+    const user_id = url.searchParams.get('user_id');
+
     try {
-        const body = await request.json();
-        
-        const response = await fetch(`https://${BACKEND_DOMAIN_NAME}/projects`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `${BEARER_TOKEN_BACKEND}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        });
-        
-        if (!response.ok) {
-            const error = await response.text();
-            return new Response(error, { status: response.status });
+        let apiUrl = `https://${BACKEND_DOMAIN_NAME}/projects?skip=${skip}&limit=${limit}`;
+        if (user_id) {
+            apiUrl += `&user_id=${user_id}`;
         }
-        
-        const data = await response.json();
-        return json(data);
+
+        const response = await fetch(apiUrl, {
+            headers: {
+                'Authorization': `${BEARER_TOKEN_BACKEND}`
+            }
+        });
+
+        if (!response.ok) {
+            return json({ error: 'Failed to fetch projects' }, { status: response.status });
+        }
+
+        const projects = await response.json();
+        return json(projects);
     } catch (error) {
-        console.error('Error creating project:', error);
-        return new Response('Internal server error', { status: 500 });
+        console.error('Error fetching projects:', error);
+        return json({ error: 'Internal server error' }, { status: 500 });
     }
 };
