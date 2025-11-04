@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import ProfileCard from '$lib/components/ProfileCard.svelte';
+	import ProfileCard from '$lib/components/Profilecard.svelte';
 	import { filterProjectProfanity } from '$lib/utils/profanityFilter';
 
 	interface Project {
