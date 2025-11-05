@@ -65,7 +65,7 @@
     </a>
     <iframe 
         src="https://o0gkkkok8k08wwgksk8okgwg.a.selfhosted.hackclub.com/" 
-        class="absolute w-3/4 h-[75vh] overflow-hidden hidden scale-120 z-40 -right-100 drop-shadow-6xl" 
+        class="absolute w-3/4 h-[75vh] overflow-hidden scale-120 z-40 -right-100 drop-shadow-6xl" 
         scrolling="no"
         title="Simulation"
     ></iframe>
