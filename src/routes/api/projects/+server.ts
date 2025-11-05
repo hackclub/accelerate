@@ -30,3 +30,29 @@ export const GET: RequestHandler = async ({ url }) => {
         return json({ error: 'Internal server error' }, { status: 500 });
     }
 };
+
+export const POST: RequestHandler = async ({ request }) => {
+    try {
+        const projectData = await request.json();
+
+        const response = await fetch(`https://${BACKEND_DOMAIN_NAME}/projects`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `${BEARER_TOKEN_BACKEND}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(projectData)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            return json({ error: errorText || 'Failed to create project' }, { status: response.status });
+        }
+
+        const project = await response.json();
+        return json(project);
+    } catch (error) {
+        console.error('Error creating project:', error);
+        return json({ error: 'Internal server error' }, { status: 500 });
+    }
+};
