@@ -65,7 +65,7 @@
     </a>
     <iframe 
         src="https://is4gsgks4ww4gw4wo0gsokw4.a.selfhosted.hackclub.com/" 
-        class="absolute w-3/4 h-[75vh] overflow-hidden scale-120 z-40 -right-100 drop-shadow-6xl" 
+        class="absolute w-3/4 h-[75vh] overflow-hidden scale-120 z-40 -right-100 -translate-y-25 drop-shadow-6xl" 
         scrolling="no"
         title="Simulation"
     ></iframe>
@@ -96,7 +96,7 @@
     </h1>
     <p class={expanded ? "hidden" : "absolute top-45 left-15 text-3xl md:text-3xl z-50 text-neutral-700 drop-shadow-lg hover:text-neutral-400 underline hover:font-bold hover:cursor-pointer"}> <a href="/whiteboard/rules">Rules + Judging Rubric + scoring Info</a></p>
     <p class={expanded ? "hidden" : "absolute top-55 left-15 text-2xl md:text-2xl z-50 text-neutral-700 drop-shadow-lg"}>Submission Deadline:  T-{countdown}</p>
-    <p class = "absolute bottom-57 left-100 text-xl font-pangolin">
+    <p class = "absolute bottom-42 left-100 text-xl font-pangolin">
         <b class="text-4xl font-pangolin">Your Task:</b> <br>
         This week you're challenged to build your own Three Body Problem simulation! <br>
         You can write it in anything, as long as you don't use a premade physics engine,<br> and it's shipped as either a web-page,
@@ -110,7 +110,7 @@
         <span class="relative left-10 text-2xl font-pangolin">The bodies had different charges?</span><br>
         <span class="relative left-10 text-2xl font-pangolin">It was interactive?</span>
     </p>
-    <button class="absolute bottom-25 left-120 hover:cursor-pointer" onclick={() => window.location.replace("/whiteboard/week/3%264/submit")} onmouseenter={() => (hoverSubmit = true)} onmouseleave={() => (hoverSubmit = false)}>
+    <button class="absolute bottom-10 left-120 hover:cursor-pointer" onclick={() => window.location.replace("/whiteboard/week/3%264/submit")} onmouseenter={() => (hoverSubmit = true)} onmouseleave={() => (hoverSubmit = false)}>
         <img src={hoverSubmit ? "/submitgreen.png" : "/submitred.png"} alt="Submit Button" class="w-70"/>
     </button>
     
