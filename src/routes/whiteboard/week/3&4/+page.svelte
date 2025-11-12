@@ -74,7 +74,7 @@
         ? "fixed inset-0 z-50 w-screen h-screen"
         : "absolute left-10 bottom-15 w-full max-w-[20rem] h-[55vh] z-40 rounded-lg"}>
         <iframe
-            src="/page.pdf"
+            src="/Weeks_3_4__The_Three_Body_Problem.pdf"
             class={expanded ? "w-full h-full" : "w-full h-full rounded-2xl"}
             title="Embedded PDF Viewer"
         ></iframe>
