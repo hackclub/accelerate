@@ -11,7 +11,7 @@
 
     let scaleSignInButton = $state(false);
 
-    let hcaRedirect = `https://hca.dinosaurbbq.org/oauth/authorize?client_id=${PUBLIC_HC_OAUTH_CLIENT_ID}&redirect_uri=${PUBLIC_HC_OAUTH_REDIRECT_URL}&response_type=${PUBLIC_HC_OAUTH_RESPONSE_TYPE}&scope=email`;
+    let hcaRedirect = `https://identity.hackclub.com/oauth/authorize?client_id=${PUBLIC_HC_OAUTH_CLIENT_ID}&redirect_uri=${PUBLIC_HC_OAUTH_REDIRECT_URL}&response_type=${PUBLIC_HC_OAUTH_RESPONSE_TYPE}&scope=email%20name%20slack_id%20verification_status`;
     let slackRedirect = `https://slack.com/openid/connect/authorize?response_type=code&scope=openid%20profile%20email&client_id=${PUBLIC_SLACK_CLIENT_ID}&state=${PUBLIC_SLACK_OAUTH_STATE}&nonce=${PUBLIC_SLACK_OAUTH_NONCE}&redirect_uri=${PUBLIC_SLACK_REDIRECT_URI}`
 
     onMount(() => {
@@ -116,7 +116,7 @@
             </div>
             <img src="graph.png" alt="Graph" class={mobileLayout ? "hidden" :"absolute right-15 rotate-10"} style={mobileLayout ? "" : `top: ${innerHeight* 2.35}px`}/>
             <img src="clickme.png" alt="Click Me Pointer" class={mobileLayout? "absolute left-0 -translate-x-20 rotate-10 scale-20 translate-y-250" : "absolute left-15 rotate-10"} style={mobileLayout? "" : `top: ${innerHeight* 2.35}px`}/>
-            <a href={slackRedirect} class={mobileLayout? "absolute z-30 scale-50 top-0 translate-y-290 left-0" : "absolute z-30 left-120"} style={mobileLayout? "" : `top: ${innerHeight * 2.5}px`} onmouseenter={() => (scaleSignInButton = true)} onmouseleave={() => (scaleSignInButton = false)}>
+            <a href={hcaRedirect} class={mobileLayout? "absolute z-30 scale-50 top-0 translate-y-290 left-0" : "absolute z-30 left-120"} style={mobileLayout? "" : `top: ${innerHeight * 2.5}px`} onmouseenter={() => (scaleSignInButton = true)} onmouseleave={() => (scaleSignInButton = false)}>
                 <img src="signin.png" alt="Sign In Button" class={scaleSignInButton ? "w-120 mt-10 mb-20 scale-120" : "w-120 mt-10 mb-20 scale-100"}/>
             </a>
         </div>

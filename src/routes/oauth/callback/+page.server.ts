@@ -36,7 +36,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
             grant_type: 'authorization_code'
         });
 
-        const tokenResponse = await fetch('https://hca.dinosaurbbq.org/oauth/token', {
+        const tokenResponse = await fetch('https://identity.hackclub.com/oauth/token', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -53,7 +53,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
     const data = await tokenResponse.json();
     const accessToken = data.access_token;
 
-        const getCompositePrimaryKey = await fetch(`https://hca.dinosaurbbq.org/api/v1/me`, {
+        const getCompositePrimaryKey = await fetch(`https://identity.hackclub.com/api/v1/me`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -67,7 +67,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
         const userIDV = await getCompositePrimaryKey.json();
         console.log('User fetched successfully from IDV:', userIDV);
 
-        const userResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/by-email/${encodeURIComponent(userIDV.identity.primary_email)}`, {
+        const userResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/by-slack/${encodeURIComponent(userIDV.identity.slack_id)}`, {
             headers: {
                 'Authorization': `${BEARER_TOKEN_BACKEND}`
             }
@@ -76,7 +76,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
         let user = await userResponse.json();
 
         if (!user || !user.user_id) {
-            console.log('User not found for email, creating new user');
+            console.log('User not found for slack_id, creating new user');
             
             const createUserResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users`, {
                 method: 'POST',
@@ -106,6 +106,41 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
             }
 
             user = await createUserResponse.json();
+        }
+
+        if (user && user.user_id && user.first_login) {
+            try {
+                const patchResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/${user.user_id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `${BEARER_TOKEN_BACKEND}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        first_name: userIDV.identity.first_name || '',
+                        last_name: userIDV.identity.last_name || '',
+                        slack_id: userIDV.identity.slack_id || '',
+                        email: userIDV.identity.primary_email,
+                        is_admin: user.is_admin ?? false,
+                        address_line_1: userIDV.identity.addresses?.[0]?.line_1 || '',
+                        address_line_2: userIDV.identity.addresses?.[0]?.line_2 || '',
+                        city: userIDV.identity.addresses?.[0]?.city || '',
+                        state: userIDV.identity.addresses?.[0]?.state || '',
+                        country: userIDV.identity.addresses?.[0]?.country_code || '',
+                        post_code: userIDV.identity.addresses?.[0]?.postal_code || '',
+                        birthday: user.birthday || new Date().toISOString()
+                    })
+                });
+
+                if (!patchResponse.ok) {
+                    console.error('Failed to patch first_login user data');
+                } else {
+                    const updatedUser = await patchResponse.json();
+                    user = updatedUser;
+                }
+            } catch (e) {
+                console.error('Error patching first_login user', e);
+            }
         }
 
         const hashedUserID = hashUserID(user.user_id);
