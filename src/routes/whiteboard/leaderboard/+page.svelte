@@ -1,15 +1,63 @@
+<script lang="ts">
+    import type { PageData } from './$types';
+
+    export let data: PageData;
+
+    const leaderboard = data.leaderboard ?? [];
+</script>
+
+<style>
+    :global(html, body) {
+        overflow: auto !important;
+        height: auto !important;
+    }
+</style>
+
+<div class="absolute inset-0 z-0">
+    <img src="/top-whiteboard.png" alt="" class="w-full h-auto block" />
+    <img src="/middle-whiteboard.png" alt="" class="w-full h-auto block" />
+    <img src="/middle-2-whiteboard.png" alt="" class="w-full h-auto block" />
+    <img src="/bottom-whiteboard.png" alt="" class="w-full h-auto block" />
+</div>
+
 <div>
     <a href="/whiteboard/week/3&4" class="fixed top-12 right-12 z-50">
         <div class="flex flex-col items-center gap-2">
-            <img src="/arrow.jpg" alt="Up Arrow" class="w-16 md:w-20 -rotate-90"/>
+            <img src="/arrow.jpg" alt="Up Arrow" class="w-16 md:w-20 -rotate-90" />
             <p class="text-3xl font-semibold">Up to Week 3&4</p>
         </div>
     </a>
     <a href="/whiteboard/gallery" class="fixed bottom-12 right-12 z-50">
-        <div class="flex flex-col items-center gap-2 ">
+        <div class="flex flex-col items-center gap-2">
             <p class="text-3xl font-semibold">Down to Gallery</p>
             <img src="/arrow.jpg" alt="Down Arrow" class="w-16 md:w-20 rotate-90" />
         </div>
     </a>
 </div>
-<img src="/locked.png" alt="Leaderboard Locked" class="absolute top-1/2 left-3/10 "/>
+
+<div class="container mx-auto px-50 pb-24 pt-32 z-20 -translate-x-30 relative">
+    <h1 class="text-6xl font-bold text-neutral-700 mb-10 text-center">Leaderboard</h1>
+
+    {#if leaderboard.length}
+        <table class="w-full border-collapse border border-neutral-300 bg-neutral-50/60 backdrop-blur-md shadow-lg">
+            <thead>
+                <tr class="bg-neutral-100/80 text-3xl">
+                    <th class="border border-neutral-300 p-4 text-left">GitHub Username</th>
+                    <th class="border border-neutral-300 p-4 text-left">Week 1 Score</th>
+                    <th class="border border-neutral-300 p-4 text-left">Rank</th>
+                </tr>
+            </thead>
+            <tbody class="bg-neutral-50/40">
+                {#each leaderboard as { rank, github_username, final_score }}
+                    <tr class="hover:bg-neutral-100/70 transition-colors">
+                        <td class="border border-neutral-300 p-4 text-2xl text-neutral-800 font-pangolin">{github_username}</td>
+                        <td class="border border-neutral-300 p-4 text-2xl text-blue-700">{final_score}</td>
+                        <td class="border border-neutral-300 p-4 text-2xl text-neutral-800">{rank}</td>
+                    </tr>
+                {/each}
+            </tbody>
+        </table>
+    {:else}
+        <p class="text-2xl text-neutral-700 text-center mt-6">No rankings available yet.</p>
+    {/if}
+</div>
