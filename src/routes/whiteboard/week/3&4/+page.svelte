@@ -12,7 +12,7 @@
     }
 
     onMount(() => {
-        const targetDate = new Date('2025-11-25T00:00:00-05:00'); // November 10, 2025, 12:00 AM EST
+        const targetDate = new Date('2025-11-27T00:00:00-05:00'); // November 27, 2025, 12:00 AM EST
 
         const updateCountdown = () => {
             const now = new Date();
