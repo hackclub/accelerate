@@ -89,7 +89,7 @@
             }
         } catch (error) {
             console.error('Submission error:', error);
-            alert('An error occurred while submitting your project');
+            alert('An error occurred while submitting your project, please try a smaller filesize for the screenshot.');
         } finally {
             submitting = false;
         }
