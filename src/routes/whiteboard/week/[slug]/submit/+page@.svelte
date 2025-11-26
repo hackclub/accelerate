@@ -85,7 +85,7 @@
                 setTimeout(() => goto(`/whiteboard/week/${slug}`), 7000);
             } else {
                 const error = await response.text();
-                alert(`Failed to submit project: ${error}`);
+                alert(`Please reduce the filesize of your screenshot and try again.`);
             }
         } catch (error) {
             console.error('Submission error:', error);
