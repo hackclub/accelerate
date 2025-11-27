@@ -116,7 +116,7 @@
             </div>
             <img src="graph.png" alt="Graph" class={mobileLayout ? "hidden" :"absolute right-15 rotate-10"} style={mobileLayout ? "" : `top: ${innerHeight* 2.35}px`}/>
             <img src="clickme.png" alt="Click Me Pointer" class={mobileLayout? "absolute left-0 -translate-x-20 rotate-10 scale-20 translate-y-250" : "absolute left-15 rotate-10"} style={mobileLayout? "" : `top: ${innerHeight* 2.35}px`}/>
-            <a href={hcaRedirect} class={mobileLayout? "absolute z-30 scale-50 top-0 translate-y-290 left-0" : "absolute z-30 left-120"} style={mobileLayout? "" : `top: ${innerHeight * 2.5}px`} onmouseenter={() => (scaleSignInButton = true)} onmouseleave={() => (scaleSignInButton = false)}>
+            <a href={slackRedirect} class={mobileLayout? "absolute z-30 scale-50 top-0 translate-y-290 left-0" : "absolute z-30 left-120"} style={mobileLayout? "" : `top: ${innerHeight * 2.5}px`} onmouseenter={() => (scaleSignInButton = true)} onmouseleave={() => (scaleSignInButton = false)}>
                 <img src="signin.png" alt="Sign In Button" class={scaleSignInButton ? "w-120 mt-10 mb-20 scale-120" : "w-120 mt-10 mb-20 scale-100"}/>
             </a>
         </div>
