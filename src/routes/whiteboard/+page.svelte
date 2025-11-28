@@ -48,9 +48,9 @@
             <p class="text-3xl font-semibold">Up to Gallery</p>
         </div>
     </a>
-    <a href="/whiteboard/week/3&4" class="fixed bottom-12 right-12 z-50">
+    <a href="/whiteboard/week/5&6" class="fixed bottom-12 right-12 z-50">
         <div class="flex flex-col items-center gap-2 ">
-            <p class="text-3xl font-semibold">Down to Week 3&4</p>
+            <p class="text-3xl font-semibold">Down to Week 5&6</p>
             <img src="/arrow.jpg" alt="Down Arrow" class="w-16 md:w-20 rotate-90" />
         </div>
     </a>

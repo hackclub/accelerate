@@ -1,4 +1,6 @@
 <script>
+    import { page } from '$app/stores';
+
     let { children, data } = $props();
     
     let week1_2Box = $state(data.weekStatus.week1_2);
@@ -15,12 +17,18 @@
     }
 </script>
 
+<svelte:head>
+    {#if $page.url.pathname !== '/whiteboard/leaderboard'}
+        <link rel="stylesheet" href="/no-scroll.css" />
+    {/if}
+</svelte:head>
+
 <div class="bg" aria-hidden="true">
     <img src="/dashboard-bg.png" alt="" class="bg-image" />
 </div>
 
 <div class="relative z-[1]">
-    <div class="fixed top-12 left-12 z-40 flex flex-row items-center gap-3 p-3">
+    <div class="{$page.url.pathname === '/whiteboard/leaderboard' ? 'absolute' : 'fixed'} top-12 left-12 z-40 flex flex-row items-center gap-3 p-3">
         <p class="text-lg">Logged In As: <span class="font-bold">{currentUser}</span></p>
         <button
             onclick={logout}
@@ -77,10 +85,5 @@
             height: 100dvh;
         object-fit: fill; /* stretch to exactly fill both dimensions */
         display: block;
-    }
-
-    :global(html, body) {
-        overflow: hidden; /* prevent scrollbars */
-        height: 100%;
     }
 </style>

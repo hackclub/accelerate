@@ -1,0 +1,4 @@
+html, body {
+    overflow: hidden; /* prevent scrollbars */
+    height: 100%;
+}
