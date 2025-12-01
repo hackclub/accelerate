@@ -9,16 +9,6 @@
 		attachment_urls: string[];
 		code_url: string;
 		live_url: string;
-		submission_week: string;
-		paper_url: string;
-		shipped: boolean;
-		sent_to_airtable: boolean;
-		review_ids: string[];
-		time_spent: number;
-		project_id: string;
-		user_id: string;
-		created_at: string;
-		updated_at: string;
 	}
 
 	let iframeUrl = $state<string | null>(null);
@@ -62,7 +52,7 @@
 	let expandedProject = $state<Project | null>(null);
 
 	function toggleExpand(project: Project) {
-		if (expandedProject?.project_id === project.project_id) {
+		if (expandedProject?.project_name === project.project_name) {
 			expandedProject = null;
 		} else {
 			expandedProject = project;
@@ -86,7 +76,7 @@
 
 	async function loadProjects() {
 		try {
-			const response = await fetch('/api/projects?limit=100');
+			const response = await fetch('/api/projects?limit=15');
 			if (!response.ok) {
 				throw new Error('Failed to fetch projects');
 			}
@@ -134,7 +124,7 @@
 <section class="min-h-screen mt-40 px-8 relative z-10">
 
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-		{#each displayedProjects as project (project.project_id)}
+		{#each displayedProjects as project (project.project_name)}
 			{@const description = project.project_description || 'No description'}
 			{@const needsTruncate = description.length > 120}
 			{@const displayDescription = needsTruncate ? description.slice(0, 120) + '...' : description}
@@ -163,8 +153,8 @@
 						{/if}
 					</div>
 					
-					<div class="flex gap-4 items-center mt-auto pt-0 flex-wrap text-neutral-700">
-						{#if project.code_url}
+					{#if project.code_url}
+						<div class="flex gap-4 items-center mt-auto pt-0 flex-wrap text-neutral-700">
 							<a 
 								href={project.code_url} 
 								target="_blank" 
@@ -174,10 +164,8 @@
 							>
 								Code
 							</a>
-						{/if}
-						<p class="text-sm">Week {project.submission_week}</p>
-						<p class="text-sm">{Math.floor(project.time_spent / 60)}h {project.time_spent % 60}m</p>
-					</div>
+						</div>
+					{/if}
 				</ProfileCard>
 			</div>
 		{/each}
@@ -220,8 +208,6 @@
 							View Live Project
 						</a>
 					{/if}
-					<p class="text-lg text-neutral-600">Week {expandedProject.submission_week}</p>
-					<p class="text-lg text-neutral-600">Time: {Math.floor(expandedProject.time_spent / 60)}h {expandedProject.time_spent % 60}m</p>
 				</div>
 			</div>
 		</div>

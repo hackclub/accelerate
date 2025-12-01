@@ -20,7 +20,13 @@ export const GET: RequestHandler = async ({ url }) => {
         }
 
         const projects = await response.json();
-        const sanitizedProjects = projects.map(({ user_id, ...rest }: { user_id: string; [key: string]: unknown }) => rest);
+        const sanitizedProjects = projects.map((project: Record<string, unknown>) => ({
+            project_name: project.project_name,
+            project_description: project.project_description,
+            attachment_urls: project.attachment_urls,
+            code_url: project.code_url,
+            live_url: project.live_url
+        }));
         return json(sanitizedProjects);
     } catch (error) {
         console.error('Error fetching projects:', error);
