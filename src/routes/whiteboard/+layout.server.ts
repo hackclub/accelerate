@@ -74,6 +74,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
         week5_6: false,
         week7_8: false,
         week9_10: false
+        week11_12: false
     };
 
     if (projectsResponse.ok) {
@@ -85,6 +86,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
         weekStatus.week5_6 = projects.some((p: any) => p.submission_week === '5&6');
         weekStatus.week7_8 = projects.some((p: any) => p.submission_week === '7&8');
         weekStatus.week9_10 = projects.some((p: any) => p.submission_week === '9&10');
+        weekStatus.week11_12 = projects.some((p: any) => p.submission_week === '11&12');
     }
 
     return {

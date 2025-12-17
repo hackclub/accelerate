@@ -8,6 +8,7 @@
     let week5_6Box = $state(data.weekStatus.week5_6);
     let week7_8Box = $state(data.weekStatus.week7_8);
     let week9_10Box = $state(data.weekStatus.week9_10);
+    let week11_12Box = $state(data.weekStatus.week11_12);
 
     let currentUser = data.userName;
 
@@ -61,6 +62,11 @@
             <img src="/greenBox.png" alt="green week 9_10" class="w-15 h-15 px-2"/>
             {:else}
             <img src="/blackBox.png" alt="black week 9_10" class="w-15 h-15 px-2"/>
+            {/if}
+            {#if week11_12Box}
+            <img src="/greenBox.png" alt="green week 11_12" class="w-15 h-15 px-2"/>
+            {:else}
+            <img src="/blackBox.png" alt="black week 11_12" class="w-15 h-15 px-2"/>
             {/if}
         </div>
     </div>
