@@ -41,18 +41,23 @@
     {#if leaderboard.length}
         <table class="w-full border-collapse border border-neutral-300 bg-neutral-50/60 backdrop-blur-md shadow-lg">
             <thead>
-                <tr class="bg-neutral-100/80 text-3xl">
+                <tr class="bg-neutral-100/80 text-2xl">
                     <th class="border border-neutral-300 p-4 text-left">GitHub Username</th>
-                    <th class="border border-neutral-300 p-4 text-left">Week 1 Score</th>
-                    <th class="border border-neutral-300 p-4 text-left">Rank</th>
+                    <th class="border border-neutral-300 p-4 text-center">C1</th>
+                    <th class="border border-neutral-300 p-4 text-center">C2</th>
+                    <th class="border border-neutral-300 p-4 text-center">C3</th>
+                    <th class="border border-neutral-300 p-4 text-center">C4</th>
+                    <th class="border border-neutral-300 p-4 text-center">C5</th>
+                    <th class="border border-neutral-300 p-4 text-center">C6</th>
                 </tr>
             </thead>
             <tbody class="bg-neutral-50/40">
-                {#each leaderboard as { rank, github_username, final_score }}
+                {#each leaderboard as { github_username, challenge_ranks }}
                     <tr class="hover:bg-neutral-100/70 transition-colors">
-                        <td class="border border-neutral-300 p-4 text-2xl text-neutral-800 font-pangolin">{github_username}</td>
-                        <td class="border border-neutral-300 p-4 text-2xl text-blue-700">{final_score}</td>
-                        <td class="border border-neutral-300 p-4 text-2xl text-neutral-800">{rank}</td>
+                        <td class="border border-neutral-300 p-4 text-xl text-neutral-800 font-pangolin">{github_username}</td>
+                        {#each challenge_ranks as rank}
+                            <td class="border border-neutral-300 p-4 text-xl text-blue-700 text-center">{rank ?? '-'}</td>
+                        {/each}
                     </tr>
                 {/each}
             </tbody>
