@@ -60,7 +60,7 @@
     <h1 class="{mediumSize ? 'text-3xl' : 'text-8xl'} md:text-7xl font-bold text-neutral-700 mb-6">Welcome to Accelerate!!</h1>
     <h2 class="{mediumSize ? 'text-xl' : 'text-2xl'} md:text-3xl font-semibold text-neutral-700 mb-4">The <u>First</u> Physics Based YSWS</h2>
     <h3 class="{mediumSize ? 'text-xl' : 'text-2xl'} md:text-2xl font-medium text-neutral-700 mb-3">
-        So what are the prizes?
+        So what are the prizes? (You must complete two challenges to claim!)
         <ul class="px-12 list-inside {mediumSize ? 'text-md' : 'text-xl'}">
             <li>1st: <a href="https://www.apple.com/macbook-pro/" class="underline hover:text-neutral-400">M5 Macbook Pro</a> or a Ticket to the <a href="https://summit.aps.org/" class="underline hover:text-neutral-400">APS Global Physics Summit</a></li>
             <li>2nd: <a href="https://www.apple.com/macbook-air/" class="underline hover:text-neutral-400">M4 Macbook Air</a></li>
