@@ -73,7 +73,7 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
         week3_4: false,
         week5_6: false,
         week7_8: false,
-        week9_10: false
+        week9_10: false,
         week11_12: false
     };
 
