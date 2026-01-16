@@ -21,10 +21,10 @@
 </div>
 
 <div>
-    <a href="/whiteboard/week/9&10" class="fixed top-12 right-12 z-50">
+    <a href="/whiteboard/week/11&12" class="fixed top-12 right-12 z-50">
         <div class="flex flex-col items-center gap-2">
             <img src="/arrow.jpg" alt="Up Arrow" class="w-16 md:w-20 -rotate-90" />
-            <p class="text-3xl font-semibold">Up to Week 9&10</p>
+            <p class="text-3xl font-semibold">Up to Week 11&12</p>
         </div>
     </a>
     <a href="/whiteboard/gallery" class="fixed bottom-12 right-12 z-50">
