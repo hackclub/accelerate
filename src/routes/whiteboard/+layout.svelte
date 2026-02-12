@@ -19,9 +19,7 @@
 </script>
 
 <svelte:head>
-    {#if $page.url.pathname !== '/whiteboard/leaderboard'}
-        <link rel="stylesheet" href="/no-scroll.css" />
-    {/if}
+    <link rel="stylesheet" href="/no-scroll.css" />
 </svelte:head>
 
 <div class="bg" aria-hidden="true">
@@ -29,7 +27,7 @@
 </div>
 
 <div class="relative z-[1]">
-    <div class="{$page.url.pathname === '/whiteboard/leaderboard' ? 'absolute' : 'fixed'} top-12 left-12 z-40 flex flex-row items-center gap-3 p-3">
+    <div class="fixed top-12 left-12 z-40 flex flex-row items-center gap-3 p-3">
         <p class="text-lg">Logged In As: <span class="font-bold">{currentUser}</span></p>
         <button
             onclick={logout}

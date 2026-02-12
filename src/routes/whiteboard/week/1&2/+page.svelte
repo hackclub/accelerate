@@ -57,7 +57,7 @@
             <p class="text-3xl font-semibold">Up to Whiteboard</p>
         </div>
     </a>
-    <a href="/whiteboard/leaderboard" class="fixed bottom-12 right-12 z-50">
+    <a href="/leaderboard" class="fixed bottom-12 right-12 z-50">
         <div class="flex flex-col items-center gap-2 ">
             <p class="text-3xl font-semibold">Down to Leaderboard</p>
             <img src="/arrow.jpg" alt="Down Arrow" class="w-16 md:w-20 rotate-90" />
