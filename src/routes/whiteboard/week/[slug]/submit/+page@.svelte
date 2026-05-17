@@ -7,7 +7,7 @@
     
     let projectName = $state('');
     let projectDescription = $state('');
-    let screenshot = $state(null);
+    let screenshot = $state<File | null>(null);
     let codeUrl = $state('');
     let liveUrl = $state('');
     let paperUrl = $state('');
@@ -17,19 +17,18 @@
     let submitting = $state(false);
     let submitted = $state(false);
     let selectedProject = $state('');
-    
+
     const slug = $derived($page.params.slug);
-    
-    let fileInput;
-    
-    function handleFileChange(event) {
-        const file = event.target.files?.[0];
+
+    function handleFileChange(event: Event) {
+        const input = event.currentTarget as HTMLInputElement;
+        const file = input.files?.[0];
         if (file) {
             screenshot = file;
         }
     }
     
-    async function handleSubmit(event) {
+    async function handleSubmit(event: SubmitEvent) {
         event.preventDefault();
         
         if (submitting) return;
@@ -38,12 +37,13 @@
         try {
             // Convert screenshot to base64 if exists
             let attachmentUrls: string[] = [];
-            if (screenshot) {
+            const screenshotFile = screenshot;
+            if (screenshotFile) {
                 const reader = new FileReader();
                 const base64Promise = new Promise<string>((resolve, reject) => {
                     reader.onload = () => resolve(reader.result as string);
                     reader.onerror = reject;
-                    reader.readAsDataURL(screenshot);
+                    reader.readAsDataURL(screenshotFile);
                 });
                 
                 const base64 = await base64Promise;
@@ -168,7 +168,6 @@
                 type="file"
                 accept="image/*"
                 onchange={handleFileChange}
-                bind:this={fileInput}
                 required
                 class={screenshot ? "w-full px-4 py-2 rounded-lg ring-2 ring-green-400 focus:ring-blue-500" : "w-full px-4 py-2 rounded-lg focus:outline-none ring-2 ring-black focus:ring-blue-500"}
             />
@@ -209,9 +208,9 @@
         
         <!-- Submission Week (Display Only) -->
         <div>
-            <label class="block text-lg font-semibold mb-2">
+            <p class="block text-lg font-semibold mb-2">
                 Submission Week
-            </label>
+            </p>
             <input
                 type="text"
                 value={slug}

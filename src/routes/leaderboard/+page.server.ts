@@ -1,6 +1,6 @@
 import type { PageServerLoad } from './$types';
 import scoresData from '../../../accelerate_scores.json';
-import { BACKEND_DOMAIN_NAME, BEARER_TOKEN_BACKEND } from '$env/static/private';
+import { requirePrivateEnv } from '$lib/server/env';
 
 // C1 = weeks 1&2, C2 = weeks 3&4, etc.
 const CHALLENGE_WEEKS = ['1&2', '3&4', '5&6', '7&8', '9&10', '11&12'];
@@ -54,6 +54,8 @@ interface Project {
 }
 
 export const load: PageServerLoad = async ({ cookies }) => {
+    const backendDomainName = requirePrivateEnv('BACKEND_DOMAIN_NAME');
+    const bearerTokenBackend = requirePrivateEnv('BEARER_TOKEN_BACKEND');
     const loggedIn = !!cookies.get('userID');
     const competitors = scoresData.competitors as unknown as Record<string, Competitor>;
     const results = scoresData.results as unknown as Record<string, Result>;
@@ -65,8 +67,8 @@ export const load: PageServerLoad = async ({ cookies }) => {
     // Map: lowercase username -> { profile_url, weeks: { submission_week -> { code_url, live_url } } }
     const projectsByUser: Record<string, { profile_url: string; weeks: Record<string, { code_url: string; live_url: string }> }> = {};
     try {
-        const projectsRes = await fetch(`https://${BACKEND_DOMAIN_NAME}/projects`, {
-            headers: { 'Authorization': BEARER_TOKEN_BACKEND }
+        const projectsRes = await fetch(`https://${backendDomainName}/projects`, {
+            headers: { 'Authorization': bearerTokenBackend }
         });
         if (projectsRes.ok) {
             const projects: Project[] = await projectsRes.json();
