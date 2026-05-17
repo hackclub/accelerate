@@ -1,18 +1,23 @@
 import { redirect, isRedirect, isHttpError } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { PUBLIC_SLACK_CLIENT_ID, PUBLIC_SLACK_OAUTH_STATE, PUBLIC_SLACK_OAUTH_NONCE, PUBLIC_SLACK_REDIRECT_URI } from '$env/static/public';
-import { SLACK_CLIENT_SECRET, BEARER_TOKEN_BACKEND, BACKEND_DOMAIN_NAME, ENCRYPTION_KEY, npm_config_cache } from '$env/static/private';
+import { requirePrivateEnv, requirePublicEnv } from '$lib/server/env';
 import { createCipheriv, randomBytes } from 'crypto';
 
-function hashUserID(userID: string): string {
+function hashUserID(userID: string, encryptionKey: string): string {
     const iv = randomBytes(16);
-    const cipher = createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY, 'hex'), iv);
+    const cipher = createCipheriv('aes-256-cbc', Buffer.from(encryptionKey, 'hex'), iv);
     let encrypted = cipher.update(userID, 'utf8', 'hex');
     encrypted += cipher.final('hex');
     return iv.toString('hex') + ':' + encrypted;
 }
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
+    const encryptionKey = requirePrivateEnv('ENCRYPTION_KEY');
+    const backendDomainName = requirePrivateEnv('BACKEND_DOMAIN_NAME');
+    const bearerTokenBackend = requirePrivateEnv('BEARER_TOKEN_BACKEND');
+    const slackClientSecret = requirePrivateEnv('SLACK_CLIENT_SECRET');
+    const publicSlackClientId = requirePublicEnv('PUBLIC_SLACK_CLIENT_ID');
+    const publicSlackRedirectUri = requirePublicEnv('PUBLIC_SLACK_REDIRECT_URI');
     const code1 = url.searchParams.get('code');
     const error = url.searchParams.get('error');
 
@@ -29,9 +34,9 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
     try {
         const params = new URLSearchParams({
             code: code1,
-            client_id: PUBLIC_SLACK_CLIENT_ID,
-            client_secret: SLACK_CLIENT_SECRET,
-            redirect_uri: PUBLIC_SLACK_REDIRECT_URI
+            client_id: publicSlackClientId,
+            client_secret: slackClientSecret,
+            redirect_uri: publicSlackRedirectUri
         });
 
         const slackResponse = await fetch('https://slack.com/api/openid.connect.token', {
@@ -75,9 +80,9 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
         const email = tokenPayload.email;
         const firstName = tokenPayload.name;
 
-        const userResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/by-email/${encodeURIComponent(email)}`, {
+        const userResponse = await fetch(`https://${backendDomainName}/users/by-email/${encodeURIComponent(email)}`, {
             headers: {
-                'Authorization': `${BEARER_TOKEN_BACKEND}`
+                'Authorization': bearerTokenBackend
             }
         });
 
@@ -102,12 +107,12 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
             };
 
             console.log('Creating user with request body:', requestBody);
-            console.log('Request URL:', `https://${BACKEND_DOMAIN_NAME}/users`);
+            console.log('Request URL:', `https://${backendDomainName}/users`);
             
-            const createUserResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users`, {
+            const createUserResponse = await fetch(`https://${backendDomainName}/users`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `${BEARER_TOKEN_BACKEND}`,
+                    'Authorization': bearerTokenBackend,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(requestBody)
@@ -127,7 +132,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
         }
 
         ////console.log('User logged in:', user1.user_id);
-        const hashedUserID = hashUserID(user1.user_id);
+        const hashedUserID = hashUserID(user1.user_id, encryptionKey);
         cookies.set('userID', hashedUserID, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
         throw redirect(302, '/whiteboard');
 

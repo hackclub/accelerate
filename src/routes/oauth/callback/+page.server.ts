@@ -1,18 +1,23 @@
 import { redirect, isRedirect, isHttpError } from '@sveltejs/kit';
-import { HC_OAUTH_CLIENT_SECRET, BEARER_TOKEN_BACKEND, BACKEND_DOMAIN_NAME, ENCRYPTION_KEY } from '$env/static/private';
-import { PUBLIC_HC_OAUTH_CLIENT_ID, PUBLIC_HC_OAUTH_REDIRECT_URL } from '$env/static/public';
+import { requirePrivateEnv, requirePublicEnv } from '$lib/server/env';
 import type { PageServerLoad } from './$types';
 import { createCipheriv, randomBytes } from 'crypto';
 
-function hashUserID(userID: string): string {
+function hashUserID(userID: string, encryptionKey: string): string {
     const iv = randomBytes(16);
-    const cipher = createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY, 'hex'), iv);
+    const cipher = createCipheriv('aes-256-cbc', Buffer.from(encryptionKey, 'hex'), iv);
     let encrypted = cipher.update(userID, 'utf8', 'hex');
     encrypted += cipher.final('hex');
     return iv.toString('hex') + ':' + encrypted;
 }
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
+    const encryptionKey = requirePrivateEnv('ENCRYPTION_KEY');
+    const backendDomainName = requirePrivateEnv('BACKEND_DOMAIN_NAME');
+    const bearerTokenBackend = requirePrivateEnv('BEARER_TOKEN_BACKEND');
+    const hcOauthClientSecret = requirePrivateEnv('HC_OAUTH_CLIENT_SECRET');
+    const publicHcOauthClientId = requirePublicEnv('PUBLIC_HC_OAUTH_CLIENT_ID');
+    const publicHcOauthRedirectUrl = requirePublicEnv('PUBLIC_HC_OAUTH_REDIRECT_URL');
     const code = url.searchParams.get('code');
     const error = url.searchParams.get('error');
     const errorDescription = url.searchParams.get('error_description');
@@ -29,9 +34,9 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 
     try {
         const params = new URLSearchParams({
-            client_id: PUBLIC_HC_OAUTH_CLIENT_ID,
-            client_secret: HC_OAUTH_CLIENT_SECRET,
-            redirect_uri: PUBLIC_HC_OAUTH_REDIRECT_URL,
+            client_id: publicHcOauthClientId,
+            client_secret: hcOauthClientSecret,
+            redirect_uri: publicHcOauthRedirectUrl,
             code: code,
             grant_type: 'authorization_code'
         });
@@ -67,9 +72,9 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
         const userIDV = await getCompositePrimaryKey.json();
         console.log('User fetched successfully from IDV:', userIDV);
 
-        const userResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/by-slack/${encodeURIComponent(userIDV.identity.slack_id)}`, {
+        const userResponse = await fetch(`https://${backendDomainName}/users/by-slack/${encodeURIComponent(userIDV.identity.slack_id)}`, {
             headers: {
-                'Authorization': `${BEARER_TOKEN_BACKEND}`
+                'Authorization': bearerTokenBackend
             }
         });
 
@@ -78,10 +83,10 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
         if (!user || !user.user_id) {
             console.log('User not found for slack_id, creating new user');
             
-            const createUserResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users`, {
+            const createUserResponse = await fetch(`https://${backendDomainName}/users`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `${BEARER_TOKEN_BACKEND}`,
+                    'Authorization': bearerTokenBackend,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
@@ -110,10 +115,10 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 
         if (user && user.user_id && user.first_login) {
             try {
-                const patchResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/${user.user_id}`, {
+                const patchResponse = await fetch(`https://${backendDomainName}/users/${user.user_id}`, {
                     method: 'PATCH',
                     headers: {
-                        'Authorization': `${BEARER_TOKEN_BACKEND}`,
+                        'Authorization': bearerTokenBackend,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
@@ -143,7 +148,7 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
             }
         }
 
-        const hashedUserID = hashUserID(user.user_id);
+        const hashedUserID = hashUserID(user.user_id, encryptionKey);
         cookies.set('userID', hashedUserID, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
         cookies.set('accessToken', accessToken, { path: '/', httpOnly: true, secure: true, sameSite: 'lax' });
         throw redirect(302, '/whiteboard');

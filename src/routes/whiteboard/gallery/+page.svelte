@@ -63,6 +63,13 @@
 		expandedProject = null;
 	}
 
+	function handleBackdropKeydown(event: KeyboardEvent, close: () => void) {
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			close();
+		}
+	}
+
 	function openIframe(url: string, event: MouseEvent) {
 		event.preventDefault();
 		iframeUrl = url;
@@ -174,8 +181,22 @@
 
 <!-- Expanded Description Modal -->
 {#if expandedProject}
-	<div class="iframe-modal" onclick={closeExpanded}>
-		<div class="expanded-container" onclick={(e) => e.stopPropagation()}>
+	<div
+		class="iframe-modal"
+		role="button"
+		tabindex="0"
+		aria-label="Close expanded project view"
+		onclick={closeExpanded}
+		onkeydown={(event) => handleBackdropKeydown(event, closeExpanded)}
+	>
+		<div
+			class="expanded-container"
+			role="dialog"
+			aria-modal="true"
+			tabindex="-1"
+			onclick={(e) => e.stopPropagation()}
+			onkeydown={(e) => e.stopPropagation()}
+		>
 			<button class="close-button-expanded" onclick={closeExpanded} aria-label="Close expanded view">
 				X
 			</button>
@@ -216,8 +237,22 @@
 
 <!-- iframe Modal -->
 {#if showModal && iframeUrl}
-	<div class="iframe-modal" onclick={closeModal}>
-		<div class="iframe-container" onclick={(e) => e.stopPropagation()}>
+	<div
+		class="iframe-modal"
+		role="button"
+		tabindex="0"
+		aria-label="Close project preview"
+		onclick={closeModal}
+		onkeydown={(event) => handleBackdropKeydown(event, closeModal)}
+	>
+		<div
+			class="iframe-container"
+			role="dialog"
+			aria-modal="true"
+			tabindex="-1"
+			onclick={(e) => e.stopPropagation()}
+			onkeydown={(e) => e.stopPropagation()}
+		>
 			<button class="close-button" onclick={closeModal} aria-label="Close modal">
 				✕
 			</button>

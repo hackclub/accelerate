@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { page } from '$app/state';
-    import { PUBLIC_HC_OAUTH_CLIENT_ID, PUBLIC_HC_OAUTH_REDIRECT_URL, PUBLIC_HC_OAUTH_RESPONSE_TYPE, PUBLIC_SLACK_CLIENT_ID, PUBLIC_SLACK_OAUTH_STATE, PUBLIC_SLACK_OAUTH_NONCE, PUBLIC_SLACK_REDIRECT_URI } from '$env/static/public';
+    import { env } from '$env/dynamic/public';
 
     let innerHeight = $state(0);
     let innerWidth = $state(0);
@@ -11,8 +11,8 @@
 
     let scaleSignInButton = $state(false);
 
-    let hcaRedirect = `https://identity.hackclub.com/oauth/authorize?client_id=${PUBLIC_HC_OAUTH_CLIENT_ID}&redirect_uri=${PUBLIC_HC_OAUTH_REDIRECT_URL}&response_type=${PUBLIC_HC_OAUTH_RESPONSE_TYPE}&scope=email%20name%20slack_id%20verification_status`;
-    let slackRedirect = `https://slack.com/openid/connect/authorize?response_type=code&scope=openid%20profile%20email&client_id=${PUBLIC_SLACK_CLIENT_ID}&state=${PUBLIC_SLACK_OAUTH_STATE}&nonce=${PUBLIC_SLACK_OAUTH_NONCE}&redirect_uri=${PUBLIC_SLACK_REDIRECT_URI}`
+    let hcaRedirect = `https://identity.hackclub.com/oauth/authorize?client_id=${env.PUBLIC_HC_OAUTH_CLIENT_ID ?? ''}&redirect_uri=${env.PUBLIC_HC_OAUTH_REDIRECT_URL ?? ''}&response_type=${env.PUBLIC_HC_OAUTH_RESPONSE_TYPE ?? 'code'}&scope=email%20name%20slack_id%20verification_status`;
+    let slackRedirect = `https://slack.com/openid/connect/authorize?response_type=code&scope=openid%20profile%20email&client_id=${env.PUBLIC_SLACK_CLIENT_ID ?? ''}&state=${env.PUBLIC_SLACK_OAUTH_STATE ?? ''}&nonce=${env.PUBLIC_SLACK_OAUTH_NONCE ?? ''}&redirect_uri=${env.PUBLIC_SLACK_REDIRECT_URI ?? ''}`;
 
     onMount(() => {
         document.title = "Accelerate - Build Simulations";

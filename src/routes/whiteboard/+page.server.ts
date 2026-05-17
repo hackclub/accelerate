@@ -1,14 +1,16 @@
 import type { PageServerLoad } from './$types';
-import { BACKEND_DOMAIN_NAME, BEARER_TOKEN_BACKEND } from '$env/static/private';
+import { requirePrivateEnv } from '$lib/server/env';
 
 export const load: PageServerLoad = async ({ parent }) => {
+    const backendDomainName = requirePrivateEnv('BACKEND_DOMAIN_NAME');
+    const bearerTokenBackend = requirePrivateEnv('BEARER_TOKEN_BACKEND');
     const { userID } = await parent();
 
     try {
         // Fetch user's projects
-        const projectsResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/${userID}/projects`, {
+        const projectsResponse = await fetch(`https://${backendDomainName}/users/${userID}/projects`, {
             headers: {
-                'Authorization': `${BEARER_TOKEN_BACKEND}`
+                'Authorization': bearerTokenBackend
             }
         });
 

@@ -1,18 +1,21 @@
 import type { PageServerLoad } from './$types';
-import { BACKEND_DOMAIN_NAME, BEARER_TOKEN_BACKEND, ENCRYPTION_KEY } from '$env/static/private';
+import { requirePrivateEnv } from '$lib/server/env';
 import { createDecipheriv } from 'crypto';
 
-function unhashUserID(hashedUserID: string): string {
+function unhashUserID(hashedUserID: string, encryptionKey: string): string {
     const parts = hashedUserID.split(':');
     const iv = Buffer.from(parts[0], 'hex');
     const encrypted = parts[1];
-    const decipher = createDecipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY, 'hex'), iv);
+    const decipher = createDecipheriv('aes-256-cbc', Buffer.from(encryptionKey, 'hex'), iv);
     let decrypted = decipher.update(encrypted, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
     return decrypted;
 }
 
 export const load: PageServerLoad = async ({ cookies }) => {
+    const backendDomainName = requirePrivateEnv('BACKEND_DOMAIN_NAME');
+    const bearerTokenBackend = requirePrivateEnv('BEARER_TOKEN_BACKEND');
+    const encryptionKey = requirePrivateEnv('ENCRYPTION_KEY');
     const hashedUserID = cookies.get('userID');
 
     if (!hashedUserID) {
@@ -20,12 +23,12 @@ export const load: PageServerLoad = async ({ cookies }) => {
     }
 
     try {
-        const userID = unhashUserID(hashedUserID);
+        const userID = unhashUserID(hashedUserID, encryptionKey);
 
         // Get user data to fetch slack_id
-        const userResponse = await fetch(`https://${BACKEND_DOMAIN_NAME}/users/${userID}`, {
+        const userResponse = await fetch(`https://${backendDomainName}/users/${userID}`, {
             headers: {
-                'Authorization': `${BEARER_TOKEN_BACKEND}`
+                'Authorization': bearerTokenBackend
             }
         });
 

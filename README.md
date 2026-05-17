@@ -1,38 +1,29 @@
-# sv
+# Accelerate
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+SvelteKit app for the Accelerate program.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
+## Local development
 
 ```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+## Vercel deployment
 
-To create a production version of your app:
+This repo is configured for Vercel serverless via `@sveltejs/adapter-vercel`.
+
+Required environment variables are listed in [.env.example](/Users/sh/Documents/GitHub/accelerate/.env.example:1). Set the same values in Vercel for `Preview` and `Production` before deploying.
+
+Useful commands:
 
 ```sh
-npm run build
+vercel pull --yes --environment=preview
+vercel build --yes
+vercel deploy --prebuilt
 ```
 
-You can preview the production build with `npm run preview`.
+## Notes
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- The app depends on external backend and OAuth services, so local `vercel build` needs the same env vars that Coolify used.
+- No local filesystem persistence is required by the app routes, which keeps the runtime compatible with serverless functions.

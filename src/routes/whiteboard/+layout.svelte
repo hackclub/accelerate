@@ -1,16 +1,8 @@
 <script>
-    import { page } from '$app/stores';
-
     let { children, data } = $props();
-    
-    let week1_2Box = $state(data.weekStatus.week1_2);
-    let week3_4Box = $state(data.weekStatus.week3_4);
-    let week5_6Box = $state(data.weekStatus.week5_6);
-    let week7_8Box = $state(data.weekStatus.week7_8);
-    let week9_10Box = $state(data.weekStatus.week9_10);
-    let week11_12Box = $state(data.weekStatus.week11_12);
 
-    let currentUser = data.userName;
+    let weekStatus = $derived(data.weekStatus);
+    let currentUser = $derived(data.userName);
 
     async function logout() {
         await fetch('/api/logout', { method: 'POST' });
@@ -36,32 +28,32 @@
             <img src="/logout.png" alt="Logout" class="w-7 inline-block mr-2 hover:cursor-pointer" />
         </button>
         <div class="flex flex-row items-center gap-2">
-            {#if week1_2Box}
+            {#if weekStatus.week1_2}
             <img src="/greenBox.png" alt="green week 1_2" class="w-15 h-15 px-2"/>
             {:else}
             <img src="/blackBox.png" alt="black week 1_2" class="w-15 h-15 px-2"/>
             {/if}
-            {#if week3_4Box}
+            {#if weekStatus.week3_4}
             <img src="/greenBox.png" alt="green week 3_4" class="w-15 h-15 px-2"/>
             {:else}
             <img src="/blackBox.png" alt="black week 3_4" class="w-15 h-15 px-2"/>
             {/if}
-            {#if week5_6Box}
+            {#if weekStatus.week5_6}
             <img src="/greenBox.png" alt="green week 5_6" class="w-15 h-15 px-2"/>
             {:else}
             <img src="/blackBox.png" alt="black week 5_6" class="w-15 h-15 px-2"/>
             {/if}
-            {#if week7_8Box}
+            {#if weekStatus.week7_8}
             <img src="/greenBox.png" alt="green week 7_8" class="w-15 h-15 px-2"/>
             {:else}
             <img src="/blackBox.png" alt="black week 7_8" class="w-15 h-15 px-2"/>
             {/if}
-            {#if week9_10Box}
+            {#if weekStatus.week9_10}
             <img src="/greenBox.png" alt="green week 9_10" class="w-15 h-15 px-2"/>
             {:else}
             <img src="/blackBox.png" alt="black week 9_10" class="w-15 h-15 px-2"/>
             {/if}
-            {#if week11_12Box}
+            {#if weekStatus.week11_12}
             <img src="/greenBox.png" alt="green week 11_12" class="w-15 h-15 px-2"/>
             {:else}
             <img src="/blackBox.png" alt="black week 11_12" class="w-15 h-15 px-2"/>
